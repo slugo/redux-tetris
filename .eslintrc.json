@@ -1,0 +1,15 @@
+{
+    "extends": "airbnb",
+    "installedESLint": true,
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "indent": [2, "tab"],
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "react/jsx-indent": [2, "tab"],
+        "react/jsx-indent-props": [2, "tab"],
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": true} ],
+        "max-len": ["error", 150]
+    }
+}
