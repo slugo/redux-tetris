@@ -34,9 +34,9 @@ export const startGame = () => ({
 	type: START_GAME,
 });
 
-export const clearLine = (id) => ({
+export const clearLine = (position) => ({
 	type: CLEAR_LINE,
-	id,
+	position,
 });
 
 export const addScore = (points) => ({

@@ -1,8 +1,11 @@
 
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import { connect } from 'react-redux';
 import { startGame } from '../actions/actions.js';
+
+injectTapEventPlugin();
 
 let Menu = ({ active, dispatch }) => {
 	let style = {
@@ -23,11 +26,14 @@ let Menu = ({ active, dispatch }) => {
 		</div>
 	);
 };
-Menu = connect()(Menu);
+const mapStateToProps = (state) => ({
+	active: state.menuStatus,
+});
+Menu = connect(mapStateToProps)(Menu);
 
 Menu.propTypes = {
-	dispatch: React.PropTypes.function,
-	active: React.PropTypes.boolean,
+	dispatch: React.PropTypes.func,
+	active: React.PropTypes.bool,
 };
 export default Menu;
 
