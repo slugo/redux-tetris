@@ -1,3 +1,8 @@
+const initialGrid = new Array(10);
+
+for (let index = 0; index < 10; index++) {
+	initialGrid[index] = new Array(22);
+}
 
 export default {
 	panelWidth: 400,
@@ -35,5 +40,6 @@ export default {
 			ys: [0, 0, 1, 1],
 		},
 	},
+	initialGrid,
 };
 

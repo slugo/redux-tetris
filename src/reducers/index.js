@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux';
+import gameConstants from '../gameConstants.js';
 import * as actions from '../actions/actions.js';
+
+const { initialGrid } = gameConstants;
 
 function menuStatus(state = true, action) {
 	switch (action.type) {
@@ -7,12 +10,14 @@ function menuStatus(state = true, action) {
 		return true;
 	case actions.HIDE_MENU:
 		return false;
+	case actions.START_GAME:
+		return false;
 	default:
 		return state;
 	}
 }
 
-function activeTetrominos(state = [], action) {
+function activeTetrominos(state = initialGrid, action) {
 	switch (action.type) {
 	case actions.ADD_TETROMINO:
 		return 1;
@@ -34,12 +39,21 @@ function currentTetromino(state = [], action) {
 	}
 }
 
-function gameScore(state = 0, action) {
+function nextTetromino(state = [], action) {
+	switch (action.type) {
+	case actions.START_GAME:
+		return 1;
+	default:
+		return state;
+	}
+}
+
+function gameScore(state = { points: 0, lines: 0 }, action) {
 	switch (action.type) {
 	case actions.ADD_SCORE:
-		return state + action.points;
+		return Object.assign({}, state, { points: state.points + action.points });
 	case actions.CLEAR_LINE:
-		return state + 1;
+		return Object.assign({}, state, { lines: state.lines + action.lines });
 	default:
 		return state;
 	}
@@ -50,6 +64,7 @@ const tetrisApp = combineReducers({
 	currentTetromino,
 	gameScore,
 	menuStatus,
+	nextTetromino,
 });
 
 export default tetrisApp;
