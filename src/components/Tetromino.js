@@ -1,26 +1,30 @@
-
 import React from 'react';
 import { Rect, Group } from 'react-konva';
 import gameConstants from '../gameConstants.js';
 
-const { blockUnit, tetrominos } = gameConstants;
+const { blockUnit } = gameConstants;
 
-const Tetromino = ({ color, type }) => {
-	const { xs, ys } = tetrominos[type];
+const Tetromino = ({ shape, offsetX, offsetY }) => {
+	console.log(` Testing literals ${shape} , ${offsetX} , ${offsetY}`);
+
 	return (
 		<Group >
-			<Rect width={blockUnit} height={blockUnit} x={blockUnit * xs[0]} y={blockUnit * ys[0]} fill={color} />
-			<Rect width={blockUnit} height={blockUnit} x={blockUnit * xs[1]} y={blockUnit * ys[1]} fill={color} />
-			<Rect width={blockUnit} height={blockUnit} x={blockUnit * xs[2]} y={blockUnit * ys[2]} fill={color} />
-			<Rect width={blockUnit} height={blockUnit} x={blockUnit * xs[3]} y={blockUnit * ys[3]} fill={color} />
+			<Rect width={blockUnit} height={blockUnit} x={0} y={0} fill={0} />
+			<Rect width={blockUnit} height={blockUnit} x={0} y={0} fill={0} />
+			<Rect width={blockUnit} height={blockUnit} x={0} y={0} fill={0} />
+			<Rect width={blockUnit} height={blockUnit} x={0} y={0} fill={0} />
 		</Group>
 	);
 };
 
 Tetromino.propTypes = {
-	color: React.PropTypes.string,
-	type: React.PropTypes.string,
+	offsetX: React.PropTypes.string,
+	offsetY: React.PropTypes.string,
+	shape: React.PropTypes.string,
 };
 
 export default Tetromino;
+
+
+
 

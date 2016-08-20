@@ -1,4 +1,3 @@
-
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -6,12 +5,11 @@ import { connect } from 'react-redux';
 import { startGame } from '../actions/actions.js';
 
 injectTapEventPlugin();
-
-let Menu = ({ active, dispatch }) => {
+let Menu = ({ menuStatus, dispatch }) => {
 	let style = {
 		width: '50%',
 		margin: '0 auto',
-		display: active ? 'block' : 'none',
+		display: menuStatus ? 'block' : 'none',
 	};
 	return (
 		<div>
@@ -26,14 +24,16 @@ let Menu = ({ active, dispatch }) => {
 		</div>
 	);
 };
-const mapStateToProps = (state) => ({
-	active: state.menuStatus,
-});
+const mapStateToProps = (state) => {
+	console.log(state);
+	return { menuStatus: state.menuStatus };
+};
 Menu = connect(mapStateToProps)(Menu);
-
 Menu.propTypes = {
 	dispatch: React.PropTypes.func,
-	active: React.PropTypes.bool,
+	menuStatus: React.PropTypes.bool,
 };
 export default Menu;
+
+
 

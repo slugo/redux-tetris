@@ -1,4 +1,3 @@
-
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import React from 'react';
@@ -15,4 +14,7 @@ const App = () => (
 );
 
 ReactDOM.render(<App />, document.getElementById('react-app'));
+
+
+
 

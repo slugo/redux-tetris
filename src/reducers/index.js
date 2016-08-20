@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import gameConstants from '../gameConstants.js';
 import * as actions from '../actions/actions.js';
 
-const { initialGrid } = gameConstants;
+const { initialGrid, tetrominos } = gameConstants;
 
 function menuStatus(state = true, action) {
 	switch (action.type) {
@@ -17,6 +17,38 @@ function menuStatus(state = true, action) {
 	}
 }
 
+function isPlaying(state = false, action) {
+	switch (action.type) {
+	case actions.START_GAME:
+		return true;
+	case actions.STOP_GAME:
+		return false;
+	default:
+		return state;
+	}
+}
+
+function rotateTetromino(matrix, orientation) {
+	const n = matrix.length;
+	let ret = new Array(n);
+	ret = ret.map((x) => new Array(x.length));
+
+	if (orientation === 'right') {
+		for (let i = 0; i < n; ++i) {
+			for (let j = 0; j < n; ++j) {
+				ret[i][j] = matrix[n - j - 1][i];
+			}
+		}
+	} else {
+		for (let i = 0; i < n; ++i) {
+			for (let j = 0; j < n; ++j) {
+				ret[i][j] = matrix[n - i - 1][j];
+			}
+		}
+	}
+	return ret;
+}
+
 function activeTetrominos(state = initialGrid, action) {
 	switch (action.type) {
 	case actions.ADD_TETROMINO:
@@ -25,11 +57,24 @@ function activeTetrominos(state = initialGrid, action) {
 		return state;
 	}
 }
-
-function currentTetromino(state = [], action) {
+function nextTetromino(state = [], action) {
 	switch (action.type) {
-	case actions.SPAWN_TETROMINO:
+	case actions.START_GAME:
 		return 1;
+	default:
+		break;
+	}
+}
+function currentTetromino(state = [], action) {
+	const randomnumber = Math.floor(Math.random() * 7);
+
+	switch (action.type) {
+	case actions.START_GAME:
+		return {
+			shape: tetrominos[randomnumber],
+			offsetX: 0,
+			offsetY: 0,
+		};
 	case actions.MOVE_TETROMINO:
 		return 1;
 	case actions.ROTATE_TETROMINO:
@@ -38,54 +83,28 @@ function currentTetromino(state = [], action) {
 		return state;
 	}
 }
+function checkCollision() {
 
-function nextTetromino(state = [], action) {
-	switch (action.type) {
-	case actions.START_GAME:
-		return 1;
-	default:
-		return state;
-	}
 }
-
-function gameScore(state = { points: 0, lines: 0 }, action) {
+function gameScore(state = 0, action) {
 	switch (action.type) {
 	case actions.ADD_SCORE:
-		return Object.assign({}, state, { points: state.points + action.points });
+		return state + action.points;
 	case actions.CLEAR_LINE:
-		return Object.assign({}, state, { lines: state.lines + action.lines });
+		return state + 1;
 	default:
 		return state;
 	}
 }
-
 const tetrisApp = combineReducers({
 	activeTetrominos,
 	currentTetromino,
 	gameScore,
 	menuStatus,
-	nextTetromino,
+	isPlaying,
 });
 
 export default tetrisApp;
-/*
-initialState = {
-	currentTetromino:{
-		type:
-		position:
-	}
-	nextTetromino:{
-		type:
-	}
-	activeTetrominos:{
 
-	}
-	score:{
 
-	}
-	clearedLines:{
-
-	}
-}
-*/
 
