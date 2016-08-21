@@ -69,7 +69,7 @@ function nextTetromino(state = [], action) {
 		return state;
 	}
 }
-function currentTetromino(state = [], action) {
+function currentTetromino(state = {}, action) {
 	const randomNumber = Math.floor(Math.random() * 7);
 	const randomShape = shapesMapping[randomNumber];
 
@@ -82,8 +82,10 @@ function currentTetromino(state = [], action) {
 			offsetX: blockUnit * 3,
 			offsetY: 0,
 		};
-	case actions.MOVE_TETROMINO:
-		return 1;
+	case actions.MOVE_RIGHT:
+		return Object.assign({}, state, { offsetX: state.offsetX + 30 });
+	case actions.MOVE_LEFT:
+		return Object.assign({}, state, { offsetX: state.offsetX - 30 });
 	case actions.ROTATE_TETROMINO:
 		return 1;
 	default:
