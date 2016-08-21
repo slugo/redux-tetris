@@ -9,7 +9,7 @@ function getCoordinates(shape) {
 	for (let i = 0; i < shape.length; i++) {
 		for (let j = 0; j < shape[i].length; j++) {
 			if (shape[i][j]) {
-				coordinates.push({ x: i, y: j });
+				coordinates.push({ x: j, y: i });
 			}
 		}
 	}
@@ -18,20 +18,22 @@ function getCoordinates(shape) {
 
 const Tetromino = ({ shape, offsetX, offsetY, color }) => {
 	const coordinates = getCoordinates(shape);
+	const xs = coordinates.map((coord) => (coord.x * blockUnit) + offsetX);
+	const ys = coordinates.map((coord) => (coord.y * blockUnit) + offsetY);
 
 	return (
-		<Group >
-			<Rect width={blockUnit} height={blockUnit} x={0} y={0} fill={color} />
-			<Rect width={blockUnit} height={blockUnit} x={0} y={0} fill={color} />
-			<Rect width={blockUnit} height={blockUnit} x={0} y={0} fill={color} />
-			<Rect width={blockUnit} height={blockUnit} x={0} y={0} fill={color} />
+		<Group>
+			<Rect width={blockUnit} height={blockUnit} x={xs[0]} y={ys[0]} fill={color} />
+			<Rect width={blockUnit} height={blockUnit} x={xs[1]} y={ys[1]} fill={color} />
+			<Rect width={blockUnit} height={blockUnit} x={xs[2]} y={ys[2]} fill={color} />
+			<Rect width={blockUnit} height={blockUnit} x={xs[3]} y={ys[3]} fill={color} />
 		</Group>
 	);
 };
 
 Tetromino.propTypes = {
-	offsetX: React.PropTypes.string,
-	offsetY: React.PropTypes.string,
+	offsetX: React.PropTypes.number,
+	offsetY: React.PropTypes.number,
 	shape: React.PropTypes.array,
 };
 
