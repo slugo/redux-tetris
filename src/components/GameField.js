@@ -13,19 +13,21 @@ let GameField = ({ isPlaying }) => {
 		borderStyle: 'solid',
 		width: fieldWidth,
 		height: fieldHeight,
-		display: isPlaying ? 'block' : 'none',
 	};
 
-	return (
-		<div style={fieldStyle}>
-			<Stage width={(fieldWidth * 60) / 100} height={fieldHeight}>
-				<Layer>
-					<CurrentTetromino />
-					<TetrominosList />
-				</Layer>
-			</Stage>
-		</div>
-	);
+	if (isPlaying) {
+		return (
+			<div style={fieldStyle}>
+				<Stage width={fieldWidth} height={fieldHeight}>
+					<Layer>
+						<CurrentTetromino />
+						<TetrominosList />
+					</Layer>
+				</Stage>
+			</div>
+		);
+	}
+	return null;
 };
 
 const mapStateToProps = (state) => ({
