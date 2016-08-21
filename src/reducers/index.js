@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import gameConstants from '../gameConstants.js';
 import * as actions from '../actions/actions.js';
 
-const { initialGrid, shapesMapping, tetrominos } = gameConstants;
+const { initialGrid, shapesMapping, tetrominos, blockUnit } = gameConstants;
 
 function checkCollision() {
 
@@ -79,7 +79,7 @@ function currentTetromino(state = [], action) {
 			shape: tetrominos[randomShape].shape,
 			name: randomShape,
 			color: tetrominos[randomShape].color,
-			offsetX: 0,
+			offsetX: blockUnit * 3,
 			offsetY: 0,
 		};
 	case actions.MOVE_TETROMINO:
