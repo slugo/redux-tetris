@@ -1,5 +1,5 @@
-import { createStore } from 'redux';
-import { Provider, applyMiddleware } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReduxThunk from 'redux-thunk';
