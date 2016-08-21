@@ -1,3 +1,5 @@
+import gameConstants from '../gameConstants.js';
+
 export const SPAWN_TETROMINO = 'SPAWN_TETROMINO';
 export const ROTATE_TETROMINO = 'ROTATE_TETROMINO';
 export const START_GAME = 'START_GAME';
@@ -5,13 +7,37 @@ export const STOP_GAME = 'STOP_GAME';
 export const CLEAR_LINE = 'CLEAR_LINE';
 export const ADD_SCORE = 'ADD_SCORE';
 export const MOVE_TETROMINO = 'MOVE_TETROMINO';
+export const MOVE_RIGHT = 'MOVE_RIGHT';
+export const MOVE_LEFT = 'MOVE_LEFT';
+export const ROTATE_CLOCK = 'ROTATE_CLOCK';
+export const ROTATE_COUNTER = 'ROTATE_COUNTER';
 export const ADD_TETROMINO = 'ADD_TETROMINO';
 
 function checkCollisions(direction, activeTetrominos, currentTetromino) {
+	const { blockUnit, fieldWidth, fieldHeight } = gameConstants;
+	let farthestX = 0;
+	let closestX = 10;
+
+	for (let i = 0; i < currentTetromino.shape.length; i++) {
+		for (let j = 0; j < currentTetromino.shape[i].length; j++) {
+			const coord = currentTetromino.shape[i][j];
+			if (coord) {
+				farthestX = Math.max(farthestX, j);
+				closestX = Math.min(closestX, j);
+			}
+		}
+	}
+
 	switch (direction) {
 	case 'left':
+		if (((closestX * blockUnit) + (currentTetromino.offsetX - blockUnit)) < 0) {
+			return false;
+		}
 		break;
 	case 'right':
+		if (((farthestX * blockUnit) + currentTetromino.offsetX + blockUnit) >= fieldWidth) {
+			return false;
+		}
 		break;
 	case 'up':
 		break;
@@ -22,6 +48,14 @@ function checkCollisions(direction, activeTetrominos, currentTetromino) {
 	}
 	return true;
 }
+
+export const moveRight = () => ({
+	type: MOVE_RIGHT,
+});
+
+export const moveLeft = () => ({
+	type: MOVE_LEFT,
+});
 
 export const rotateTetromino = (orientation) => {
 	return function (dispatch, getState){
@@ -35,12 +69,12 @@ export const moveTetromino = (direction) => {
 		switch (direction) {
 		case 'left':
 			if (checkCollisions(direction, activeTetrominos, currentTetromino)) {
-				//dispatch new tetromino with new position
+				dispatch(moveLeft());
 			}
 			return;
 		case 'right':
 			if (checkCollisions(direction, activeTetrominos, currentTetromino)) {
-				//dispatch new tetromino with new position
+				dispatch(moveRight());
 			}
 			return;
 		default:
@@ -59,21 +93,17 @@ export const loadGame = () => {
 			switch (e.keyCode){
 			case 37:
 				dispatch(moveTetromino('left'));
-				console.log("LEFT");
 				break;
 			case 39:
 				dispatch(moveTetromino('right'));
-				console.log("RIGHT");
 				break;
 			}
 		}
 		function handleRotation(e) {
 			switch (e.keyCode){
 			case 38:
-				console.log("UP");
 				break;
 			case 40:
-				console.log("DOWN");
 				break;
 			}
 		}
