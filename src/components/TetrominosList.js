@@ -1,14 +1,9 @@
 import React from 'react';
-import Tetromino from './Tetromino.js';
-import { Group } from 'react-konva';
+import { Rect, Group } from 'react-konva';
 
-const TetrominosList = ({ tetrominos }) => (
-	<h1>Hola</h1>
+const TetrominosList = () => (
+	<Rect>
+	</Rect>
 );
 
-TetrominosList.propTypes = {
-	tetrominos: React.PropTypes.array,
-};
-
-
-
+export default TetrominosList;

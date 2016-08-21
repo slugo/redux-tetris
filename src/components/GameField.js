@@ -1,13 +1,14 @@
 import React from 'react';
-import { Layer, Stage } from 'react-konva'; //Check layer integration with events.
+import { Layer, Stage } from 'react-konva';
 import { connect } from 'react-redux';
 import CurrentTetromino from '../containers/CurrentTetromino.js';
-import TetrominosList from './TetrominosList.js';
+import TetrominosList from '../containers/ActiveTetrominos.js';
 import gameConstants from '../gameConstants.js';
 
 const { fieldHeight, fieldWidth } = gameConstants;
 
 let GameField = ({ isPlaying }) => {
+	//only render when isPlaying;
 	const fieldStyle = {
 		borderStyle: 'solid',
 		width: fieldWidth,
@@ -18,7 +19,7 @@ let GameField = ({ isPlaying }) => {
 	return (
 		<div style={fieldStyle}>
 			<Stage width={(fieldWidth * 60) / 100} height={fieldHeight}>
-				<Layer> 
+				<Layer>
 					<CurrentTetromino />
 					<TetrominosList />
 				</Layer>

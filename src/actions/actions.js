@@ -6,6 +6,7 @@ export const CLEAR_LINE = 'CLEAR_LINE';
 export const ADD_SCORE = 'ADD_SCORE';
 export const MOVE_TETROMINO = 'MOVE_TETROMINO';
 export const ADD_TETROMINO = 'ADD_TETROMINO';
+
 export const spawnTetromino = (tetrominoType, offsetX, offsetY) => ({
 	type: SPAWN_TETROMINO,
 	tetrominoType,

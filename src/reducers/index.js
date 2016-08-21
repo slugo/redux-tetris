@@ -2,7 +2,32 @@ import { combineReducers } from 'redux';
 import gameConstants from '../gameConstants.js';
 import * as actions from '../actions/actions.js';
 
-const { initialGrid, tetrominos } = gameConstants;
+const { initialGrid, shapesMapping, tetrominos } = gameConstants;
+
+function checkCollision() {
+
+}
+
+function rotateTetromino(matrix, orientation) {
+	const n = matrix.length;
+	let ret = new Array(n);
+	ret = ret.map((x) => new Array(x.length));
+
+	if (orientation === 'right') {
+		for (let i = 0; i < n; ++i) {
+			for (let j = 0; j < n; ++j) {
+				ret[i][j] = matrix[n - j - 1][i];
+			}
+		}
+	} else {
+		for (let i = 0; i < n; ++i) {
+			for (let j = 0; j < n; ++j) {
+				ret[i][j] = matrix[n - i - 1][j];
+			}
+		}
+	}
+	return ret;
+}
 
 function menuStatus(state = true, action) {
 	switch (action.type) {
@@ -28,27 +53,6 @@ function isPlaying(state = false, action) {
 	}
 }
 
-function rotateTetromino(matrix, orientation) {
-	const n = matrix.length;
-	let ret = new Array(n);
-	ret = ret.map((x) => new Array(x.length));
-
-	if (orientation === 'right') {
-		for (let i = 0; i < n; ++i) {
-			for (let j = 0; j < n; ++j) {
-				ret[i][j] = matrix[n - j - 1][i];
-			}
-		}
-	} else {
-		for (let i = 0; i < n; ++i) {
-			for (let j = 0; j < n; ++j) {
-				ret[i][j] = matrix[n - i - 1][j];
-			}
-		}
-	}
-	return ret;
-}
-
 function activeTetrominos(state = initialGrid, action) {
 	switch (action.type) {
 	case actions.ADD_TETROMINO:
@@ -62,16 +66,19 @@ function nextTetromino(state = [], action) {
 	case actions.START_GAME:
 		return 1;
 	default:
-		break;
+		return state;
 	}
 }
 function currentTetromino(state = [], action) {
-	const randomnumber = Math.floor(Math.random() * 7);
+	const randomNumber = Math.floor(Math.random() * 7);
+	const randomShape = shapesMapping[randomNumber];
 
 	switch (action.type) {
 	case actions.START_GAME:
 		return {
-			shape: tetrominos[randomnumber],
+			shape: tetrominos[randomShape].shape,
+			name: randomShape,
+			color: tetrominos[randomShape].color,
 			offsetX: 0,
 			offsetY: 0,
 		};
@@ -82,9 +89,6 @@ function currentTetromino(state = [], action) {
 	default:
 		return state;
 	}
-}
-function checkCollision() {
-
 }
 function gameScore(state = 0, action) {
 	switch (action.type) {
@@ -105,6 +109,3 @@ const tetrisApp = combineReducers({
 });
 
 export default tetrisApp;
-
-
-

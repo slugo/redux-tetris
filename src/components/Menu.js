@@ -16,7 +16,7 @@ let Menu = ({ menuStatus, dispatch }) => {
 			<RaisedButton
 				label="NewGame"
 				primary style={style}
-				label="NEW GAME"
+				label="MABEL"
 				onClick={() => {
 					dispatch(startGame());
 				}}
@@ -24,10 +24,9 @@ let Menu = ({ menuStatus, dispatch }) => {
 		</div>
 	);
 };
-const mapStateToProps = (state) => {
-	console.log(state);
-	return { menuStatus: state.menuStatus };
-};
+const mapStateToProps = (state) => (
+	{ menuStatus: state.menuStatus }
+);
 Menu = connect(mapStateToProps)(Menu);
 Menu.propTypes = {
 	dispatch: React.PropTypes.func,
