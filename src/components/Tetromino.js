@@ -20,7 +20,6 @@ const Tetromino = ({ shape, offsetX, offsetY, color }) => {
 	const coordinates = getCoordinates(shape);
 	const xs = coordinates.map((coord) => (coord.x * blockUnit) + offsetX);
 	const ys = coordinates.map((coord) => (coord.y * blockUnit) + offsetY);
-
 	return (
 		<Group>
 			<Rect width={blockUnit} height={blockUnit} x={xs[0]} y={ys[0]} fill={color} />
