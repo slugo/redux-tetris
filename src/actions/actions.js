@@ -10,8 +10,6 @@ export const MOVE_TETROMINO = 'MOVE_TETROMINO';
 export const MOVE_RIGHT = 'MOVE_RIGHT';
 export const MOVE_LEFT = 'MOVE_LEFT';
 export const MOVE_DOWN = 'MOVE_DOWN';
-export const ROTATE_CLOCK = 'ROTATE_CLOCK';
-export const ROTATE_COUNTER = 'ROTATE_COUNTER';
 export const ADD_TETROMINO = 'ADD_TETROMINO';
 
 export const spawnTetromino = (tetrominoType, offsetX, offsetY) => ({
@@ -52,6 +50,10 @@ export const moveDown = () => ({
 	type: MOVE_DOWN,
 });
 
+export const rotateRight = () => ({
+	type: ROTATE_TETROMINO,
+});
+
 function checkCollisions(direction, activeTetrominos, currentTetromino) {
 	const { blockUnit, fieldWidth, fieldHeight } = gameConstants;
 	let farthestX = 0;
@@ -68,7 +70,6 @@ function checkCollisions(direction, activeTetrominos, currentTetromino) {
 			}
 		}
 	}
-
 	switch (direction) {
 	case 'left':
 		if (((closestX * blockUnit) + (currentTetromino.offsetX - blockUnit)) < 0) {
@@ -89,19 +90,20 @@ function checkCollisions(direction, activeTetrominos, currentTetromino) {
 		}
 		break;
 	default:
-		return true;
+		return false;
 	}
 	return true;
 }
 
-export const rotateTetromino = (orientation) => {
-	return function (dispatch, getState){
-		const { activeTetrominos } = getState();
-	};
-};
+export const rotateTetromino = () => (
+	function (dispatch, getState) {
+		const { activeTetrominos, currentTetromino } = getState();
+			dispatch(rotateRight());
+	}
+);
 
-export const moveTetromino = (direction) => {
-	return function(dispatch, getState) {
+export const moveTetromino = (direction) => (
+	function (dispatch, getState) {
 		const { activeTetrominos, currentTetromino } = getState();
 		switch (direction) {
 		case 'left':
@@ -122,41 +124,41 @@ export const moveTetromino = (direction) => {
 		default:
 			return;
 		}
-	};
-};
+	}
+);
 
-export const testCreator = () => {
-	return {
-		type:"MOVE_RIGHT",
-	};
-};
-
-export const loadGame = () => {
-	return function(dispatch) {
+export const loadGame = () => (
+	function (dispatch) {
 		dispatch(startGame());
 
 		function handleMoving(e) {
 			e.preventDefault();
-			switch (e.keyCode){
+			switch (e.keyCode) {
 			case 37:
 				dispatch(moveTetromino('left'));
 				break;
 			case 39:
 				dispatch(moveTetromino('right'));
 				break;
-			}
-		}
-		function handleRotation(e) {
-			switch (e.keyCode){
-			case 38:
-				break;
 			case 40:
 				dispatch(moveTetromino('down'));
 				break;
+			default:
+				break;
 			}
 		}
-		setInterval(()=>dispatch(moveTetromino('down')),1000);
+		function handleRotation(e) {
+			switch (e.keyCode) {
+			case 38:
+				dispatch(rotateTetromino());
+				break;
+			default:
+				break;
+			}
+		}
+
+		setInterval(() =>dispatch(moveTetromino('down')), 1000);
 		window.addEventListener('keydown', handleMoving);
 		window.addEventListener('keydown', handleRotation);
-	};
-};
+	}
+);

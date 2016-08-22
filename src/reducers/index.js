@@ -4,22 +4,13 @@ import * as actions from '../actions/actions.js';
 
 const { initialGrid, shapesMapping, tetrominos, blockUnit } = gameConstants;
 
-function rotateTetromino(matrix, orientation) {
+function rotateTetromino(matrix) {
 	const n = matrix.length;
-	let ret = new Array(n);
-	ret = ret.map((x) => new Array(x.length));
+	const ret = [[], [], [], []];
 
-	if (orientation === 'right') {
-		for (let i = 0; i < n; ++i) {
-			for (let j = 0; j < n; ++j) {
-				ret[i][j] = matrix[n - j - 1][i];
-			}
-		}
-	} else {
-		for (let i = 0; i < n; ++i) {
-			for (let j = 0; j < n; ++j) {
-				ret[i][j] = matrix[n - i - 1][j];
-			}
+	for (let i = 0; i < n; ++i) {
+		for (let j = 0; j < n; ++j) {
+			ret[i][j] = matrix[n - j - 1][i];
 		}
 	}
 	return ret;
@@ -66,11 +57,10 @@ function nextTetromino(state = [], action) {
 	}
 }
 function currentTetromino(state = {}, action) {
-	const randomNumber = Math.floor(Math.random() * 7);
-	const randomShape = shapesMapping[randomNumber];
-
 	switch (action.type) {
 	case actions.START_GAME:
+		const randomNumber = Math.floor(Math.random() * 7);
+		const randomShape = shapesMapping[randomNumber];
 		return {
 			shape: tetrominos[randomShape].shape,
 			name: randomShape,
@@ -83,10 +73,9 @@ function currentTetromino(state = {}, action) {
 	case actions.MOVE_LEFT:
 		return Object.assign({}, state, { offsetX: state.offsetX - 30 });
 	case actions.MOVE_DOWN:
-		console.log(state);
 		return Object.assign({}, state, { offsetY: state.offsetY + 15 });
 	case actions.ROTATE_TETROMINO:
-		return 1;
+		return Object.assign({}, state, { shape: rotateTetromino(state.shape) });
 	default:
 		return state;
 	}
