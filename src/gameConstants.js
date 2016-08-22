@@ -1,6 +1,12 @@
-const initialGrid = new Array(10);
+
+const initialGrid = [];
 for (let index = 0; index < 10; index++) {
-	initialGrid[index] = new Array(22);
+	initialGrid.push([]);
+}
+for (let index = 0; index < 10; index++) {
+	for (let count = 0; count < 22; count++) {
+		initialGrid[index].push('grey');
+	}
 }
 export default {
 	panelWidth: 500,
@@ -78,3 +84,6 @@ export default {
 	},
 	initialGrid,
 };
+
+
+

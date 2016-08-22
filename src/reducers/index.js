@@ -1,29 +1,17 @@
+
 import { combineReducers } from 'redux';
 import gameConstants from '../gameConstants.js';
-import * as actions from '../actions/actions.js';
+import * as actions from '../actions/index.js';
 
-const { initialGrid, shapesMapping, tetrominos, blockUnit } = gameConstants;
+const { initialGrid, tetrominos, blockUnit } = gameConstants;
 
-function rotateTetromino(matrix) {
-	const n = matrix.length;
-	const ret = [[], [], [], []];
-	let closestX = 10;
-
-	for (let i = 0; i < n; ++i) {
-		for (let j = 0; j < n; ++j) {
-			ret[i][j] = matrix[n - j - 1][i];
-			if (ret[i][j]) {
-				closestX = Math.min(closestX, j);
-			}
-		}
+function getNewGrid(grid, tetromino, color) {
+	const res = [...grid];
+	for (let j = 0; j < tetromino.length; j++) {
+		const { x, y } = tetromino[j];
+		res[x][y] = color;
 	}
-
-	const fill = new Array(closestX).fill(0);
-	for (let i = 0; i < n; ++i) {
-		ret[i] = ret[i].slice(closestX).concat(fill);
-	}
-
-	return ret;
+	return res;
 }
 
 function menuStatus(state = true, action) {
@@ -53,15 +41,29 @@ function isPlaying(state = false, action) {
 function activeTetrominos(state = initialGrid, action) {
 	switch (action.type) {
 	case actions.ADD_TETROMINO:
-		return 1;
+		return getNewGrid(state, action.currentTetromino, action.color);
 	default:
 		return state;
 	}
 }
-function nextTetromino(state = [], action) {
+function nextTetromino(state = {}, action) {
 	switch (action.type) {
 	case actions.START_GAME:
-		return 1;
+		return {
+			shape: tetrominos[action.nextRandomShape].shape,
+			name: action.nextRandomShape,
+			color: tetrominos[action.nextRandomShape].color,
+			offsetX: blockUnit * 3,
+			offsetY: 0,
+		};
+	case actions.ADD_TETROMINO:
+		return {
+			shape: tetrominos[action.nextRandomShape].shape,
+			name: action.nextRandomShape,
+			color: tetrominos[action.nextRandomShape].color,
+			offsetX: blockUnit * 3,
+			offsetY: 0,
+		};
 	default:
 		return state;
 	}
@@ -69,15 +71,15 @@ function nextTetromino(state = [], action) {
 function currentTetromino(state = {}, action) {
 	switch (action.type) {
 	case actions.START_GAME:
-		const randomNumber = Math.floor(Math.random() * 7);
-		const randomShape = shapesMapping[randomNumber];
 		return {
-			shape: tetrominos[randomShape].shape,
-			name: randomShape,
-			color: tetrominos[randomShape].color,
+			shape: tetrominos[action.currentRandomShape].shape,
+			name: action.currentRandomShape,
+			color: tetrominos[action.currentRandomShape].color,
 			offsetX: blockUnit * 3,
 			offsetY: 0,
 		};
+	case actions.ADD_TETROMINO:
+		return Object.assign({}, action.nextTetromino);
 	case actions.MOVE_RIGHT:
 		return Object.assign({}, state, { offsetX: state.offsetX + 30 });
 	case actions.MOVE_LEFT:
@@ -85,7 +87,7 @@ function currentTetromino(state = {}, action) {
 	case actions.MOVE_DOWN:
 		return Object.assign({}, state, { offsetY: state.offsetY + 15 });
 	case actions.ROTATE_TETROMINO:
-		return Object.assign({}, state, { shape: rotateTetromino(state.shape) });
+		return Object.assign({}, state, { shape: action.rotatedTetromino });
 	default:
 		return state;
 	}
@@ -103,9 +105,13 @@ function gameScore(state = 0, action) {
 const tetrisApp = combineReducers({
 	activeTetrominos,
 	currentTetromino,
+	nextTetromino,
 	gameScore,
 	menuStatus,
 	isPlaying,
 });
 
 export default tetrisApp;
+
+
+
