@@ -14,9 +14,8 @@ let Menu = ({ menuStatus, dispatch }) => {
 	return (
 		<div>
 			<RaisedButton
-				label="NewGame"
+				label="New Game"
 				primary style={style}
-				label="MABEL"
 				onClick={() => {
 					dispatch(loadGame());
 				}}
