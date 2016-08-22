@@ -157,7 +157,7 @@ export const loadGame = () => (
 			}
 		}
 
-		setInterval(() =>dispatch(moveTetromino('down')), 1000);
+		setInterval(() => dispatch(moveTetromino('down')), 1000);
 		window.addEventListener('keydown', handleMoving);
 		window.addEventListener('keydown', handleRotation);
 	}

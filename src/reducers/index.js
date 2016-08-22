@@ -7,12 +7,22 @@ const { initialGrid, shapesMapping, tetrominos, blockUnit } = gameConstants;
 function rotateTetromino(matrix) {
 	const n = matrix.length;
 	const ret = [[], [], [], []];
+	let closestX = 10;
 
 	for (let i = 0; i < n; ++i) {
 		for (let j = 0; j < n; ++j) {
 			ret[i][j] = matrix[n - j - 1][i];
+			if (ret[i][j]) {
+				closestX = Math.min(closestX, j);
+			}
 		}
 	}
+
+	const fill = new Array(closestX).fill(0);
+	for (let i = 0; i < n; ++i) {
+		ret[i] = ret[i].slice(closestX).concat(fill);
+	}
+
 	return ret;
 }
 
