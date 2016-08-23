@@ -48,10 +48,14 @@ function rotateArray(matrix) {
 }
 
 function checkCollisions(direction, activeTetrominos, currentTetromino) {
-	const { blockUnit, fieldWidth, fieldHeight } = gameConstants;
+	const { blockUnit, fieldHeight } = gameConstants;
 	let farthestX = 0;
 	let closestX = 10;
 	let farthestY = 0;
+	let newX = 0;
+	let newY = 0;
+	let currentX = 0;
+	let currentY = 0;
 
 	for (let i = 0; i < currentTetromino.shape.length; i++) {
 		for (let j = 0; j < currentTetromino.shape[i].length; j++) {
@@ -65,19 +69,25 @@ function checkCollisions(direction, activeTetrominos, currentTetromino) {
 	}
 	switch (direction) {
 	case 'left':
-		if (((closestX * blockUnit) + (currentTetromino.offsetX - blockUnit)) < 0) {
+		newX = (closestX - 1) + (currentTetromino.offsetX / blockUnit);
+		currentY = (currentTetromino.offsetY / blockUnit);
+		if (newX < 0) {
 			return false;
 		}
 		break;
 	case 'right':
-		if (((farthestX * blockUnit) + currentTetromino.offsetX + blockUnit) >= fieldWidth) {
+		newX = (farthestX + 1) + (currentTetromino.offsetX / blockUnit);
+		currentY = (currentTetromino.offsetY / blockUnit);
+		if (newX >= 10) {
 			return false;
 		}
 		break;
-	case 'up':
+	case 'rotation':
+		return true;
 		break;
 	case 'down':
-		if (((farthestY * blockUnit) + currentTetromino.offsetY + 30) >= fieldHeight) {
+		newY = (farthestY + 1) + (currentTetromino.offsetY / blockUnit);
+		if (newY >= 22) {
 			//Add currentTetromino to activeTetromino list
 			return false;
 		}
@@ -108,7 +118,6 @@ export const addTetromino = (currentTetromino, nextTetromino) => {
 		nextRandomShape,
 	};
 };
-
 export const startGame = () => {
 	const { shapesMapping } = gameConstants;
 	const currentRandomNumber = Math.floor(Math.random() * 7);
@@ -133,33 +142,27 @@ export const addScore = (points) => ({
 	type: ADD_SCORE,
 	points,
 });
-
 export const moveRight = () => ({
 	type: MOVE_RIGHT,
 });
-
 export const moveLeft = () => ({
 	type: MOVE_LEFT,
 });
-
 export const moveDown = () => ({
 	type: MOVE_DOWN,
 });
-
 export const rotateRight = (tetromino) => ({
 	type: ROTATE_TETROMINO,
 	rotatedTetromino: rotateArray(tetromino),
 });
-
 export const rotateTetromino = () => (
 	function (dispatch, getState) {
 		const { activeTetrominos, currentTetromino } = getState();
-		if (!checkCollisions('rotation', activeTetrominos, currentTetromino)) {
+		if (checkCollisions('rotation', activeTetrominos, currentTetromino)) {
 			dispatch(rotateRight(currentTetromino.shape));
 		}
 	}
 );
-
 export const moveTetromino = (direction) => (
 	function (dispatch, getState) {
 		const { activeTetrominos, currentTetromino, nextTetromino } = getState();
@@ -186,7 +189,6 @@ export const moveTetromino = (direction) => (
 		}
 	}
 );
-
 export const loadGame = () => (
 	function (dispatch) {
 		dispatch(startGame());
@@ -200,7 +202,7 @@ export const loadGame = () => (
 				e.preventDefault();
 				dispatch(moveTetromino('right'));
 				break;
-			case 40:
+			case 40:15
 				e.preventDefault();
 				dispatch(moveTetromino('down'));
 				break;
@@ -218,8 +220,8 @@ export const loadGame = () => (
 				break;
 			}
 		}
-
-		setInterval(() => dispatch(moveTetromino('down')), 1000);
+		//test request animation frame
+		setInterval(() => dispatch(moveTetromino('down')), 500);
 		window.addEventListener('keydown', handleMoving);
 		window.addEventListener('keydown', handleRotation);
 	}

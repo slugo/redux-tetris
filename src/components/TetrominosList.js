@@ -9,7 +9,8 @@ const TetrominosList = ({ grid }) => {
 	grid.forEach((val, i) => {
 		val.forEach((block, j) => {
 			if (block !== 'grey') {
-				arr.push(<Rect width={blockUnit} height={blockUnit} x={i*30} y={j*30} fill={block} />);
+				const key = JSON.stringify({ x: i, y: j });
+				arr.push(<Rect key={key} width={blockUnit} height={blockUnit} x={i * 30} y={j * 30} fill={block} />);
 			}
 		});
 	});

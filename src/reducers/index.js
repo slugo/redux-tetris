@@ -85,7 +85,7 @@ function currentTetromino(state = {}, action) {
 	case actions.MOVE_LEFT:
 		return Object.assign({}, state, { offsetX: state.offsetX - 30 });
 	case actions.MOVE_DOWN:
-		return Object.assign({}, state, { offsetY: state.offsetY + 15 });
+		return Object.assign({}, state, { offsetY: state.offsetY + 30 });
 	case actions.ROTATE_TETROMINO:
 		return Object.assign({}, state, { shape: action.rotatedTetromino });
 	default:
