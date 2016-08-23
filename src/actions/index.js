@@ -49,53 +49,40 @@ function rotateArray(matrix) {
 
 function checkCollisions(direction, activeTetrominos, currentTetromino) {
 	const { blockUnit, fieldHeight } = gameConstants;
-	let farthestX = 0;
-	let closestX = 10;
-	let farthestY = 0;
-	let newX = 0;
-	let newY = 0;
-	let currentX = 0;
-	let currentY = 0;
+	const currentX = currentTetromino.offsetX / blockUnit;
+	const currentY = currentTetromino.offsetY / blockUnit;
+	let leftCollision = false;
+	let rightCollision = false;
+	let downCollision = false;
 
 	for (let i = 0; i < currentTetromino.shape.length; i++) {
 		for (let j = 0; j < currentTetromino.shape[i].length; j++) {
 			const coord = currentTetromino.shape[i][j];
 			if (coord) {
-				farthestX = Math.max(farthestX, j);
-				closestX = Math.min(closestX, j);
-				farthestY = Math.max(farthestY, i);
+				if (((j - 1) + currentX) < 0) {
+					leftCollision = true;
+				}
+				if (((j + 1) + currentX) >= 10) {
+					rightCollision = true;
+				}
+				if (((i + 1) + currentY) >= 22) {
+					downCollision = true;
+				}
 			}
 		}
 	}
 	switch (direction) {
 	case 'left':
-		newX = (closestX - 1) + (currentTetromino.offsetX / blockUnit);
-		currentY = (currentTetromino.offsetY / blockUnit);
-		if (newX < 0) {
-			return false;
-		}
-		break;
+		return leftCollision;
 	case 'right':
-		newX = (farthestX + 1) + (currentTetromino.offsetX / blockUnit);
-		currentY = (currentTetromino.offsetY / blockUnit);
-		if (newX >= 10) {
-			return false;
-		}
-		break;
-	case 'rotation':
-		return true;
-		break;
+		return rightCollision;
 	case 'down':
-		newY = (farthestY + 1) + (currentTetromino.offsetY / blockUnit);
-		if (newY >= 22) {
-			//Add currentTetromino to activeTetromino list
-			return false;
-		}
-		break;
-	default:
+		return downCollision;
+	case 'rotation':
 		return false;
+	default:
+		return true;
 	}
-	return true;
 }
 
 export const spawnTetromino = (tetrominoType, offsetX, offsetY) => ({
@@ -158,7 +145,7 @@ export const rotateRight = (tetromino) => ({
 export const rotateTetromino = () => (
 	function (dispatch, getState) {
 		const { activeTetrominos, currentTetromino } = getState();
-		if (checkCollisions('rotation', activeTetrominos, currentTetromino)) {
+		if (!checkCollisions('rotation', activeTetrominos, currentTetromino)) {
 			dispatch(rotateRight(currentTetromino.shape));
 		}
 	}
@@ -168,17 +155,17 @@ export const moveTetromino = (direction) => (
 		const { activeTetrominos, currentTetromino, nextTetromino } = getState();
 		switch (direction) {
 		case 'left':
-			if (checkCollisions(direction, activeTetrominos, currentTetromino)) {
+			if (!checkCollisions(direction, activeTetrominos, currentTetromino)) {
 				dispatch(moveLeft());
 			}
 			return;
 		case 'right':
-			if (checkCollisions(direction, activeTetrominos, currentTetromino)) {
+			if (!checkCollisions(direction, activeTetrominos, currentTetromino)) {
 				dispatch(moveRight());
 			}
 			return;
 		case 'down':
-			if (checkCollisions(direction, activeTetrominos, currentTetromino)) {
+			if (!checkCollisions(direction, activeTetrominos, currentTetromino)) {
 				dispatch(moveDown());
 			} else {
 				dispatch(addTetromino(currentTetromino, nextTetromino));
