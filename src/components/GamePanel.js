@@ -7,7 +7,7 @@ const GamePanel = ({ width, height }) => {
 	const panelStyle = {
 		backgroundColor: '#CFD8DC',
 		width,
-		height,
+		height: height + 10,
 		margin: '0 auto',
 	};
 	return (

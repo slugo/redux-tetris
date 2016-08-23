@@ -2,7 +2,7 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { connect } from 'react-redux';
-import { loadGame } from '../actions/actions.js';
+import { loadGame } from '../actions/index.js';
 
 injectTapEventPlugin();
 let Menu = ({ menuStatus, dispatch }) => {

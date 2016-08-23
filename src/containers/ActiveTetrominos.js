@@ -1,13 +1,9 @@
 import { connect } from 'react-redux';
 import TetrominosList from '../components/TetrominosList.js';
 
-const getActiveTetrominos = (state) => {
-    const a = 2;
-    return a + state;
-};
-
 const mapStateToProps = (state) => ({
-    activeTetrominos: getActiveTetrominos(state.activeTetrominos),
+	grid: state.activeTetrominos,
+	color: state.currentTetromino.color,
 });
 
 const ActiveTetrominos = connect(

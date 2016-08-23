@@ -16,16 +16,21 @@ function getCoordinates(shape) {
 	return coordinates;
 }
 
+function tetrominoGroup(xs, ys, color) {
+	const arr = [];
+	for (let i = 0 ; i<xs.length; i++) {
+		arr.push(<Rect key={i} width={blockUnit} height={blockUnit} x={xs[i]} y={ys[i]} fill={color} />);
+	}
+	return arr;
+}
+
 const Tetromino = ({ shape, offsetX, offsetY, color }) => {
 	const coordinates = getCoordinates(shape);
 	const xs = coordinates.map((coord) => (coord.x * blockUnit) + offsetX);
 	const ys = coordinates.map((coord) => (coord.y * blockUnit) + offsetY);
 	return (
 		<Group>
-			<Rect width={blockUnit} height={blockUnit} x={xs[0]} y={ys[0]} fill={color} />
-			<Rect width={blockUnit} height={blockUnit} x={xs[1]} y={ys[1]} fill={color} />
-			<Rect width={blockUnit} height={blockUnit} x={xs[2]} y={ys[2]} fill={color} />
-			<Rect width={blockUnit} height={blockUnit} x={xs[3]} y={ys[3]} fill={color} />
+			{tetrominoGroup(xs, ys, color)}
 		</Group>
 	);
 };
@@ -34,6 +39,7 @@ Tetromino.propTypes = {
 	offsetX: React.PropTypes.number,
 	offsetY: React.PropTypes.number,
 	shape: React.PropTypes.array,
+	color: React.PropTypes.string,
 };
 
 export default Tetromino;

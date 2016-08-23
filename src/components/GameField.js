@@ -2,7 +2,7 @@ import React from 'react';
 import { Layer, Stage } from 'react-konva';
 import { connect } from 'react-redux';
 import CurrentTetromino from '../containers/CurrentTetromino.js';
-import TetrominosList from '../containers/ActiveTetrominos.js';
+import ActiveTetrominos from '../containers/ActiveTetrominos.js';
 import gameConstants from '../gameConstants.js';
 
 const { fieldHeight, fieldWidth } = gameConstants;
@@ -21,7 +21,7 @@ let GameField = ({ isPlaying }) => {
 				<Stage width={fieldWidth} height={fieldHeight}>
 					<Layer>
 						<CurrentTetromino />
-						<TetrominosList />
+						<ActiveTetrominos />
 					</Layer>
 				</Stage>
 			</div>
