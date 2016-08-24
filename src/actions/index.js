@@ -5,6 +5,7 @@ export const SPAWN_TETROMINO = 'SPAWN_TETROMINO';
 export const ROTATE_TETROMINO = 'ROTATE_TETROMINO';
 export const START_GAME = 'START_GAME';
 export const STOP_GAME = 'STOP_GAME';
+export const GAME_OVER = 'GAME_OVER';
 export const CLEAR_LINE = 'CLEAR_LINE';
 export const ADD_SCORE = 'ADD_SCORE';
 export const MOVE_TETROMINO = 'MOVE_TETROMINO';
@@ -26,8 +27,8 @@ function getActualCoordinates(newTetromino) {
 	}
 	return coordinates;
 }
-
-function rotateArray(matrix) {
+function rotateArray(tetromino) {
+	const matrix = tetromino.shape;
 	const n = matrix.length;
 	const ret = [[], [], [], []];
 	let closestX = 10;
@@ -44,29 +45,37 @@ function rotateArray(matrix) {
 	for (let i = 0; i < n; ++i) {
 		ret[i] = ret[i].slice(closestX).concat(fill);
 	}
+
 	return ret;
 }
-
 function checkCollisions(direction, activeTetrominos, currentTetromino) {
-	const { blockUnit, fieldHeight } = gameConstants;
+	const { blockUnit } = gameConstants;
 	const currentX = currentTetromino.offsetX / blockUnit;
 	const currentY = currentTetromino.offsetY / blockUnit;
 	let leftCollision = false;
 	let rightCollision = false;
 	let downCollision = false;
+	let rotationCollision = false;
+	let gameOver = false;
 
 	for (let i = 0; i < currentTetromino.shape.length; i++) {
 		for (let j = 0; j < currentTetromino.shape[i].length; j++) {
 			const coord = currentTetromino.shape[i][j];
 			if (coord) {
-				if (((j - 1) + currentX) < 0) {
+				if (j + currentX < 0 || i + currentY >= 22 || j + currentX >= 10 ) {
+					rotationCollision = true;
+				}
+				if (((j - 1) + currentX) < 0 || activeTetrominos[(j + currentX) - 1][currentY + i] !== 'grey') {
 					leftCollision = true;
 				}
-				if (((j + 1) + currentX) >= 10) {
+				if (((j + 1) + currentX) >= 10 || activeTetrominos[j + currentX + 1][currentY + i] !== 'grey') {
 					rightCollision = true;
 				}
-				if (((i + 1) + currentY) >= 22) {
+				if (((i + 1) + currentY) >= 22 || activeTetrominos[j + currentX][currentY + i + 1] !== 'grey') {
 					downCollision = true;
+				}
+				if (downCollision && currentY === 0) {
+					gameOver = true;
 				}
 			}
 		}
@@ -77,21 +86,22 @@ function checkCollisions(direction, activeTetrominos, currentTetromino) {
 	case 'right':
 		return rightCollision;
 	case 'down':
+		if (gameOver) {
+			return GAME_OVER;
+		}
 		return downCollision;
 	case 'rotation':
-		return false;
+		return rotationCollision;
 	default:
 		return true;
 	}
 }
-
 export const spawnTetromino = (tetrominoType, offsetX, offsetY) => ({
 	type: SPAWN_TETROMINO,
 	tetrominoType,
 	offsetX,
 	offsetY,
 });
-
 export const addTetromino = (currentTetromino, nextTetromino) => {
 	const { shapesMapping } = gameConstants;
 	const newRandomNumber = Math.floor(Math.random() * 7);
@@ -121,9 +131,8 @@ export const startGame = () => {
 export const stopGame = () => ({
 	type: STOP_GAME,
 });
-export const clearLine = (position) => ({
-	type: CLEAR_LINE,
-	position,
+export const gameOver = () => ({
+	type: GAME_OVER,
 });
 export const addScore = (points) => ({
 	type: ADD_SCORE,
@@ -138,35 +147,40 @@ export const moveLeft = () => ({
 export const moveDown = () => ({
 	type: MOVE_DOWN,
 });
-export const rotateRight = (tetromino) => ({
+export const rotateRight = (rotatedTetromino) => ({
 	type: ROTATE_TETROMINO,
-	rotatedTetromino: rotateArray(tetromino),
+	rotatedTetromino,
 });
 export const rotateTetromino = () => (
 	function (dispatch, getState) {
 		const { activeTetrominos, currentTetromino } = getState();
-		if (!checkCollisions('rotation', activeTetrominos, currentTetromino)) {
-			dispatch(rotateRight(currentTetromino.shape));
+		const rotatedTetromino = Object.assign({}, currentTetromino);
+		rotatedTetromino.shape = rotateArray(rotatedTetromino);
+		if (!checkCollisions('rotation', activeTetrominos, rotatedTetromino)) {
+			dispatch(rotateRight(rotatedTetromino.shape));
 		}
 	}
 );
 export const moveTetromino = (direction) => (
 	function (dispatch, getState) {
 		const { activeTetrominos, currentTetromino, nextTetromino } = getState();
+		const collisionCheck = checkCollisions(direction, activeTetrominos, currentTetromino);
 		switch (direction) {
 		case 'left':
-			if (!checkCollisions(direction, activeTetrominos, currentTetromino)) {
+			if (collisionCheck === false) {
 				dispatch(moveLeft());
 			}
 			return;
 		case 'right':
-			if (!checkCollisions(direction, activeTetrominos, currentTetromino)) {
+			if (collisionCheck === false) {
 				dispatch(moveRight());
 			}
 			return;
 		case 'down':
-			if (!checkCollisions(direction, activeTetrominos, currentTetromino)) {
+			if (collisionCheck === false) {
 				dispatch(moveDown());
+			} else if (collisionCheck === GAME_OVER) {
+				dispatch(gameOver());
 			} else {
 				dispatch(addTetromino(currentTetromino, nextTetromino));
 			}
@@ -189,7 +203,7 @@ export const loadGame = () => (
 				e.preventDefault();
 				dispatch(moveTetromino('right'));
 				break;
-			case 40:15
+			case 40:
 				e.preventDefault();
 				dispatch(moveTetromino('down'));
 				break;
@@ -213,6 +227,9 @@ export const loadGame = () => (
 		window.addEventListener('keydown', handleRotation);
 	}
 );
+
+
+
 
 
 

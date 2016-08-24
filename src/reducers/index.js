@@ -42,6 +42,8 @@ function activeTetrominos(state = initialGrid, action) {
 	switch (action.type) {
 	case actions.ADD_TETROMINO:
 		return getNewGrid(state, action.currentTetromino, action.color);
+	case actions.START_GAME:
+		return initialGrid;
 	default:
 		return state;
 	}
@@ -81,11 +83,11 @@ function currentTetromino(state = {}, action) {
 	case actions.ADD_TETROMINO:
 		return Object.assign({}, action.nextTetromino);
 	case actions.MOVE_RIGHT:
-		return Object.assign({}, state, { offsetX: state.offsetX + 30 });
+		return Object.assign({}, state, { offsetX: state.offsetX + blockUnit });
 	case actions.MOVE_LEFT:
-		return Object.assign({}, state, { offsetX: state.offsetX - 30 });
+		return Object.assign({}, state, { offsetX: state.offsetX - blockUnit });
 	case actions.MOVE_DOWN:
-		return Object.assign({}, state, { offsetY: state.offsetY + 30 });
+		return Object.assign({}, state, { offsetY: state.offsetY + blockUnit });
 	case actions.ROTATE_TETROMINO:
 		return Object.assign({}, state, { shape: action.rotatedTetromino });
 	default:
@@ -112,6 +114,9 @@ const tetrisApp = combineReducers({
 });
 
 export default tetrisApp;
+
+
+
 
 
 

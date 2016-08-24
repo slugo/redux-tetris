@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Layer, Stage } from 'react-konva';
 import { connect } from 'react-redux';
@@ -37,6 +38,9 @@ const mapStateToProps = (state) => ({
 GameField = connect(mapStateToProps)(GameField);
 
 export default GameField;
+
+
+
 
 
 
