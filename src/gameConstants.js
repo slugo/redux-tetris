@@ -1,9 +1,9 @@
 const initialGrid = [];
-for (let index = 0; index < 10; index++) {
+for (let index = 0; index < 15; index++) {
 	initialGrid.push([]);
 }
-for (let index = 0; index < 10; index++) {
-	for (let count = 0; count < 22; count++) {
+for (let index = 0; index < 15; index++) {
+	for (let count = 0; count < 25; count++) {
 		initialGrid[index].push('grey');
 	}
 }
@@ -78,7 +78,7 @@ export default {
 				[0, 0, 0, 0],
 				[0, 0, 0, 0],
 			],
-			color: 'black',
+			color: 'brown',
 		},
 	},
 	initialGrid,

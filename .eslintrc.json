@@ -10,6 +10,7 @@
         "react/jsx-indent": [2, "tab"],
         "react/jsx-indent-props": [2, "tab"],
         "import/no-extraneous-dependencies": ["error", {"devDependencies": true} ],
-        "max-len": ["error", 150]
+        "max-len": ["error", 150],
+        "react/jsx-boolean-value": [0]
     }
 }
