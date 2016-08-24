@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Rect, Group } from 'react-konva';
 import gameConstants from '../gameConstants.js';
@@ -10,7 +11,7 @@ const TetrominosList = ({ grid }) => {
 		val.forEach((block, j) => {
 			if (block !== 'grey') {
 				const key = JSON.stringify({ x: i, y: j });
-				arr.push(<Rect key={key} width={blockUnit} height={blockUnit} x={i * 30} y={j * 30} fill={block} />);
+				arr.push(<Rect key={key} width={blockUnit} height={blockUnit} x={i * 30} y={j * 30} fill={block} stroke="black" strokeWidth={8} />);
 			}
 		});
 	});
@@ -18,3 +19,6 @@ const TetrominosList = ({ grid }) => {
 };
 
 export default TetrominosList;
+
+
+
