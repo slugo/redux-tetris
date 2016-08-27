@@ -1,18 +1,10 @@
 
 import { combineReducers } from 'redux';
+import { getNewGrid } from '../lib/index.js';
 import gameConstants from '../gameConstants.js';
 import * as actions from '../actions/index.js';
 
 const { initialGrid, tetrominos, blockUnit } = gameConstants;
-
-function getNewGrid(grid, tetromino, color) {
-	const res = [...grid];
-	for (let j = 0; j < tetromino.length; j++) {
-		const { x, y } = tetromino[j];
-		res[x][y] = color;
-	}
-	return res;
-}
 
 function menuStatus(state = true, action) {
 	switch (action.type) {
@@ -40,6 +32,8 @@ function isPlaying(state = false, action) {
 
 function activeTetrominos(state = initialGrid, action) {
 	switch (action.type) {
+	case actions.CLEAR_LINE:
+		return [];
 	case actions.ADD_TETROMINO:
 		return getNewGrid(state, action.currentTetromino, action.color);
 	case actions.START_GAME:
@@ -114,6 +108,9 @@ const tetrisApp = combineReducers({
 });
 
 export default tetrisApp;
+
+
+
 
 
 
