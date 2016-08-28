@@ -5,7 +5,7 @@ export function lineCompleted(grid, tetromino) {
 	const rows = getActualCoordinates(tetromino).reduce((prev, cur) => {
 		return prev.hasOwnProperty(cur.y) ? Object.assign({}, prev, { [cur.y]: prev[cur.y] + 1 }) : Object.assign({}, prev, { [cur.y]: 1 });
 	}, {});
-	let gridCopy = [...grid];
+	const lines = [];
 	for (const i in rows) {
 		let count = 0;
 		for (let j = 0; j < 10; j++) {
@@ -14,15 +14,25 @@ export function lineCompleted(grid, tetromino) {
 			}
 		}
 		if (count === rows[i]) {
-			//line should be cleared
+			lines.push(i);
 		}
 	}
-	return false;
-	return true;
+	return lines.length ? lines : false;
 }
-
+export function clearLines(grid, lines) {
+	const gridCopy = grid.map((x) => [...x]);
+	for (const i in lines) {
+		const line = lines[i];
+		for (let j = 0; j < 10; j++) {
+			gridCopy[j][line] = 'grey';
+		}
+	}
+	console.log(gridCopy);
+	return gridCopy;
+}
 export function getNewGrid(grid, tetromino, color) {
-	const res = [...grid];
+	const res = grid.map((x) => [...x]);
+	console.log(tetromino);
 	for (let j = 0; j < tetromino.length; j++) {
 		const { x, y } = tetromino[j];
 		res[x][y] = color;

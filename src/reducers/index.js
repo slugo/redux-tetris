@@ -32,8 +32,6 @@ function isPlaying(state = false, action) {
 
 function activeTetrominos(state = initialGrid, action) {
 	switch (action.type) {
-	case actions.CLEAR_LINE:
-		return [];
 	case actions.ADD_TETROMINO:
 		return getNewGrid(state, action.currentTetromino, action.color);
 	case actions.START_GAME:

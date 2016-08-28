@@ -62,9 +62,6 @@ export const stopGame = () => ({
 export const gameOver = () => ({
 	type: GAME_OVER,
 });
-export const clearLine = () => ({
-	type: CLEAR_LINE,
-});
 export const addScore = (points) => ({
 	type: ADD_SCORE,
 	points,
@@ -112,8 +109,6 @@ export const moveTetromino = (direction) => (
 				dispatch(moveDown());
 			} else if (collisionCheck === GAME_OVER) {
 				dispatch(gameOver());
-			} else if (lineCompleted(activeTetrominos, currentTetromino)) {
-				dispatch(clearLine());
 			} else {
 				dispatch(addTetromino(currentTetromino, nextTetromino));
 			}
