@@ -1,42 +1,34 @@
 
 import gameConstants from '../gameConstants.js';
 
-export function lineCompleted(grid, tetromino) {
-	const rows = getActualCoordinates(tetromino).reduce((prev, cur) => {
-		return prev.hasOwnProperty(cur.y) ? Object.assign({}, prev, { [cur.y]: prev[cur.y] + 1 }) : Object.assign({}, prev, { [cur.y]: 1 });
-	}, {});
-	const lines = [];
-	for (const i in rows) {
-		let count = 0;
-		for (let j = 0; j < 10; j++) {
-			if (grid[j][i] === 'grey') {
-				count++;
-			}
-		}
-		if (count === rows[i]) {
-			lines.push(i);
-		}
-	}
-	return lines.length ? lines : false;
-}
-export function clearLines(grid, lines) {
-	const gridCopy = grid.map((x) => [...x]);
-	for (const i in lines) {
-		const line = lines[i];
-		for (let j = 0; j < 10; j++) {
-			gridCopy[j][line] = 'grey';
-		}
-	}
-	console.log(gridCopy);
-	return gridCopy;
-}
 export function getNewGrid(grid, tetromino, color) {
 	const res = grid.map((x) => [...x]);
-	console.log(tetromino);
+	const rows = tetromino.reduce((prev, cur) => {
+		prev[cur.y] = prev[cur.y] ? prev[cur.y] + 1 : 1;
+		return prev;
+	}, []);
+	const lines = [];
 	for (let j = 0; j < tetromino.length; j++) {
 		const { x, y } = tetromino[j];
 		res[x][y] = color;
 	}
+	for (const row in rows) {
+		let flag = true;
+		for (let j = 0; j < 10; j++) {
+			if (res[j][row] === 'grey') {
+				flag = false;
+			}
+		}
+		if (flag) {
+			lines.push(row);
+		}
+	}
+	for (const row of lines) {
+		for (let j = 0; j < 10; j++) {
+			res[j][row] = 'grey';
+		}
+	}
+	//Push down other pieces
 	return res;
 }
 
