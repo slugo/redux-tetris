@@ -28,6 +28,12 @@ export function getNewGrid(grid, tetromino, color) {
 			res[j][row] = 'grey';
 		}
 	}
+	for (let row = lines[0]-1; row >= 0; row--) {
+		const shift = lines.length;
+		for(let j = 0; j < 10 ;j++){
+			res[j][row+shift] = res[j][row];
+		}
+	}
 	//Push down other pieces
 	return res;
 }
