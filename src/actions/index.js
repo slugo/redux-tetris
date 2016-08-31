@@ -23,13 +23,6 @@ function dropTetromino(dispatch, startTime) {
 	}
 	requestAnimationFrame((dropTetromino.bind(this, dispatch, startTime)));
 }
-
-export const spawnTetromino = (tetrominoType, offsetX, offsetY) => ({
-	type: SPAWN_TETROMINO,
-	tetrominoType,
-	offsetX,
-	offsetY,
-});
 export const addTetromino = (currentTetromino, nextTetromino) => {
 	const { shapesMapping } = gameConstants;
 	const newRandomNumber = Math.floor(Math.random() * 7);
