@@ -1,6 +1,5 @@
-
 import { combineReducers } from 'redux';
-import { getNewGrid } from '../lib/index.js';
+import { getNewClearedGrid } from '../lib/index.js';
 import gameConstants from '../gameConstants.js';
 import * as actions from '../actions/index.js';
 
@@ -33,7 +32,7 @@ function isPlaying(state = false, action) {
 function activeTetrominos(state = initialGrid, action) {
 	switch (action.type) {
 	case actions.ADD_TETROMINO:
-		return getNewGrid(state, action.currentTetromino, action.color);
+		return getNewClearedGrid(state, action.currentTetromino, action.color);
 	case actions.START_GAME:
 		return initialGrid;
 	default:
@@ -86,12 +85,15 @@ function currentTetromino(state = {}, action) {
 		return state;
 	}
 }
-function gameScore(state = 0, action) {
+function gameScore(state = {}, action) {
 	switch (action.type) {
+	case actions.START_GAME:
+		return {
+			points: 0,
+			clearedLines: 0,
+		};
 	case actions.ADD_SCORE:
-		return state + action.points;
-	case actions.CLEAR_LINE:
-		return state + 1;
+		return Object.assign({}, state, { points: action.points + state.points, clearedLines: action.clearedLines + state.clearedLines });
 	default:
 		return state;
 	}
@@ -106,6 +108,9 @@ const tetrisApp = combineReducers({
 });
 
 export default tetrisApp;
+
+
+
 
 
 

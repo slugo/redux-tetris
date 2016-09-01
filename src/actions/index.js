@@ -1,6 +1,7 @@
 
+
 import gameConstants from '../gameConstants.js';
-import { getActualCoordinates, rotateArray, checkCollisions, lineCompleted } from '../lib/index.js';
+import { getActualCoordinates, rotateArray, checkCollisions, getCompletedLines } from '../lib/index.js';
 
 export const SPAWN_TETROMINO = 'SPAWN_TETROMINO';
 export const ROTATE_TETROMINO = 'ROTATE_TETROMINO';
@@ -15,14 +16,6 @@ export const MOVE_LEFT = 'MOVE_LEFT';
 export const MOVE_DOWN = 'MOVE_DOWN';
 export const ADD_TETROMINO = 'ADD_TETROMINO';
 
-function dropTetromino(dispatch, startTime) {
-	const currentTime = Date.now();
-	if (currentTime - startTime >= 500) {
-		startTime = currentTime;
-		dispatch(moveTetromino('down'));
-	}
-	requestAnimationFrame((dropTetromino.bind(this, dispatch, startTime)));
-}
 export const addTetromino = (currentTetromino, nextTetromino) => {
 	const { shapesMapping } = gameConstants;
 	const newRandomNumber = Math.floor(Math.random() * 7);
@@ -30,7 +23,7 @@ export const addTetromino = (currentTetromino, nextTetromino) => {
 
 	return {
 		type: ADD_TETROMINO,
-		currentTetromino: getActualCoordinates(currentTetromino),
+		currentTetromino: currentTetromino,
 		color: currentTetromino.color,
 		nextTetromino,
 		nextRandomShape,
@@ -55,9 +48,10 @@ export const stopGame = () => ({
 export const gameOver = () => ({
 	type: GAME_OVER,
 });
-export const addScore = (points) => ({
+export const addScore = (clearedLines) => ({
 	type: ADD_SCORE,
-	points,
+	points: Math.pow(clearedLines, 2) * 100,
+	clearedLines,
 });
 export const moveRight = () => ({
 	type: MOVE_RIGHT,
@@ -103,6 +97,8 @@ export const moveTetromino = (direction) => (
 			} else if (collisionCheck === GAME_OVER) {
 				dispatch(gameOver());
 			} else {
+				const clearedLines = getCompletedLines(activeTetrominos, currentTetromino).length;
+				dispatch(addScore(clearedLines));
 				dispatch(addTetromino(currentTetromino, nextTetromino));
 			}
 			return;
@@ -149,11 +145,14 @@ export const loadGame = () => (
 	}
 );
 
-
-
-
-
-
+function dropTetromino(dispatch, startTime) {
+	const currentTime = Date.now();
+	if (currentTime - startTime >= 500) {
+		startTime = currentTime;
+		dispatch(moveTetromino('down'));
+	}
+	requestAnimationFrame((dropTetromino.bind(this, dispatch, startTime)));
+}
 
 
 
