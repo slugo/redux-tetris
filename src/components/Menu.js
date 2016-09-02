@@ -7,7 +7,7 @@ import { loadGame } from '../actions/index.js';
 injectTapEventPlugin();
 let Menu = ({ menuStatus, dispatch }) => {
 	let style = {
-		width: '50%',
+		width: '25%',
 		margin: '0 auto',
 		display: menuStatus ? 'block' : 'none',
 	};

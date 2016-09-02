@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Layer, Stage } from 'react-konva';
 import { connect } from 'react-redux';
@@ -9,11 +8,12 @@ import gameConstants from '../gameConstants.js';
 const { fieldHeight, fieldWidth } = gameConstants;
 
 let GameField = ({ isPlaying }) => {
-	//only render when isPlaying;
 	const fieldStyle = {
 		borderStyle: 'solid',
 		width: fieldWidth,
 		height: fieldHeight,
+		display: 'inline-block',
+		backgroundColor: '#CFD8DC',
 	};
 
 	if (isPlaying) {

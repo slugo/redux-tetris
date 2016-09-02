@@ -2,8 +2,11 @@ import React from 'react';
 
 const GameInfo = ({points, clearedLines, nextTetromino}) => {
 	const style = {
-		display: 'inline',
+		display: 'inline-block',
 		verticalAlign: 'top',
+		backgroundColor: 'white',
+		width: '10%',
+		height: '10%',
 	};
 	console.log(`${points}, ${clearedLines}, ${nextTetromino}`);
 	return (

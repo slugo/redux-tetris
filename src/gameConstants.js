@@ -8,8 +8,6 @@ for (let index = 0; index < 15; index++) {
 	}
 }
 export default {
-	panelWidth: 500,
-	panelHeight: 660,
 	fieldWidth: 300,
 	fieldHeight: 660,
 	blockUnit: 30,
