@@ -1,7 +1,5 @@
-
-
 import gameConstants from '../gameConstants.js';
-import { getActualCoordinates, rotateArray, checkCollisions, getCompletedLines } from '../lib/index.js';
+import { rotateArray, checkCollisions, getCompletedLines } from '../lib/index.js';
 
 export const SPAWN_TETROMINO = 'SPAWN_TETROMINO';
 export const ROTATE_TETROMINO = 'ROTATE_TETROMINO';
@@ -23,7 +21,7 @@ export const addTetromino = (currentTetromino, nextTetromino) => {
 
 	return {
 		type: ADD_TETROMINO,
-		currentTetromino: currentTetromino,
+		currentTetromino,
 		color: currentTetromino.color,
 		nextTetromino,
 		nextRandomShape,
