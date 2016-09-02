@@ -1,42 +1,5 @@
 import gameConstants from '../gameConstants.js';
 
-export function getNewGrid(grid, tetromino, color) {
-	const res = grid.map((x) => [...x]);
-	const rows = tetromino.reduce((prev, cur) => {
-		prev[cur.y] = prev[cur.y] ? prev[cur.y] + 1 : 1;
-		return prev;
-	}, []);
-	const lines = [];
-	for (let j = 0; j < tetromino.length; j++) {
-		const { x, y } = tetromino[j];
-		res[x][y] = color;
-	}
-	for (const row in rows) {
-		let flag = true;
-		for (let j = 0; j < 10; j++) {
-			if (res[j][row] === 'grey') {
-				flag = false;
-			}
-		}
-		if (flag) {
-			lines.push(row);
-		}
-	}
-	for (const row of lines) {
-		for (let j = 0; j < 10; j++) {
-			res[j][row] = 'grey';
-		}
-	}
-	for (let row = lines[0] - 1; row >= 0; row--) {
-		const shift = lines.length;
-		for (let j = 0; j < 10; j++) {
-			res[j][row + shift] = res[j][row];
-		}
-	}
-	//Push down other pieces
-	return res;
-}
-
 export function getActualCoordinates(newTetromino) {
 	const coordinates = [];
 	const { shape, offsetX, offsetY } = newTetromino;
@@ -49,6 +12,53 @@ export function getActualCoordinates(newTetromino) {
 		}
 	}
 	return coordinates;
+}
+export function getNewColoredGrid(grid, tetromino, color) {
+	const gridCopy = grid.map((x) => [...x]);
+	const coords = getActualCoordinates(tetromino);
+	for (let j = 0; j < coords.length; j++) {
+		const { x, y } = coords[j];
+		gridCopy[x][y] = color;
+	}
+	return gridCopy;
+}
+export function getCompletedLines(grid, tetromino) {
+	const linesToClear = [];
+	const gridCopy = getNewColoredGrid(grid, tetromino, 'tmp');
+	const coords = getActualCoordinates(tetromino);
+	const rows = coords.reduce((prev, cur) => {
+		prev[cur.y] = prev[cur.y] ? prev[cur.y] + 1 : 1;
+		return prev;
+	}, []);
+	for (const row in rows) {
+		let flag = true;
+		for (let j = 0; j < 10; j++) {
+			if (gridCopy[j][row] === 'grey') {
+				flag = false;
+			}
+		}
+		if (flag) {
+			linesToClear.push(row);
+		}
+	}
+	return linesToClear;
+}
+
+export function getNewClearedGrid(grid, tetromino, color) {
+	const linesToClear = getCompletedLines(grid, tetromino);
+	const gridCopy = getNewColoredGrid(grid, tetromino, color);
+	for (const row of linesToClear) {
+		for (let j = 0; j < 10; j++) {
+			gridCopy[j][row] = 'grey';
+		}
+	}
+	for (let row = linesToClear[0] - 1; row >= 0; row--) {
+		const shift = linesToClear.length;
+		for (let j = 0; j < 10; j++) {
+			gridCopy[j][row + shift] = gridCopy[j][row];
+		}
+	}
+	return gridCopy;
 }
 export function rotateArray(tetromino) {
 	const matrix = tetromino.shape;
@@ -118,6 +128,3 @@ export function checkCollisions(direction, activeTetrominos, currentTetromino) {
 		return true;
 	}
 }
-
-
-
