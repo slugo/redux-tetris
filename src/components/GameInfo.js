@@ -1,16 +1,9 @@
 import React from 'react';
+import style from '../styles/styles.css';
 
 const GameInfo = ({points, clearedLines, nextTetromino}) => {
-	const style = {
-		display: 'inline-block',
-		verticalAlign: 'top',
-		backgroundColor: 'white',
-		width: '10%',
-		height: '10%',
-	};
-	console.log(`${points}, ${clearedLines}, ${nextTetromino}`);
 	return (
-		<div style={style}>
+		<div className={style.gameInfo}>
 			{points} , {clearedLines}
 		</div>
 	);

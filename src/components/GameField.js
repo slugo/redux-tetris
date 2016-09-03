@@ -4,21 +4,15 @@ import { connect } from 'react-redux';
 import CurrentTetromino from '../containers/CurrentTetromino.js';
 import ActiveTetrominos from '../containers/ActiveTetrominos.js';
 import gameConstants from '../gameConstants.js';
+import style from '../styles/styles.css';
 
 const { fieldHeight, fieldWidth } = gameConstants;
 
 let GameField = ({ isPlaying }) => {
-	const fieldStyle = {
-		borderStyle: 'solid',
-		width: fieldWidth,
-		height: fieldHeight,
-		display: 'inline-block',
-		backgroundColor: '#CFD8DC',
-	};
 
 	if (isPlaying) {
 		return (
-			<div style={fieldStyle}>
+			<div className={style.gameField}>
 				<Stage width={fieldWidth} height={fieldHeight}>
 					<Layer>
 						<CurrentTetromino />

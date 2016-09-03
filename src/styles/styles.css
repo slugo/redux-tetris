@@ -1,0 +1,15 @@
+.gameInfo {
+		display: inline-block;
+		vertical-align: top;
+		background-color: white;
+		width: 10%;
+		height: 10%;
+}
+
+.gameField {
+		border-style: solid;
+		width: 300;
+		height: 660;
+		display: inline-block;
+		background-color: #CFD8DC;
+}
