@@ -1,9 +1,13 @@
+body {
+	text-align: center;
+}
+
 .gameInfo {
 		display: inline-block;
 		vertical-align: top;
 		background-color: white;
-		width: 10%;
-		height: 10%;
+		width: 200;
+		height: 500;
 }
 
 .gameField {

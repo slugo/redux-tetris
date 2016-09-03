@@ -31,7 +31,7 @@ export default {
 				[0, 0, 0, 0],
 				[0, 0, 0, 0],
 			],
-			color: 'blue',
+			color: '#00BCD4',
 		},
 		cross: {
 			shape: [
@@ -81,6 +81,3 @@ export default {
 	},
 	initialGrid,
 };
-
-
-

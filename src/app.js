@@ -20,6 +20,7 @@ const App = () => (
 	<Provider store={store}>
 		<div>
 			<TetrisGame />
+			<DevTools />
 		</div>
 	</Provider>
 );

@@ -8,12 +8,14 @@ import CurrentGameInfo from '../containers/CurrentGameInfo.js';
 const { fieldWidth, fieldHeight } = gameConstants;
 
 const TetrisGame = () => (
-	<div style={{textAlign:'center'}}>
+	<div>
 		<MuiThemeProvider>
 			<Menu />
 		</MuiThemeProvider>
 		<GameField width={fieldWidth} height={fieldHeight} />
-		<CurrentGameInfo />
+		<MuiThemeProvider>
+			<CurrentGameInfo />
+		</MuiThemeProvider>
 	</div>
 );
 

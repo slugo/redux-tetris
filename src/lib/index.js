@@ -95,6 +95,7 @@ export function checkCollisions(direction, activeTetrominos, currentTetromino) {
 			const coord = currentTetromino.shape[i][j];
 			if (coord) {
 				if (j + currentX < 0 || i + currentY >= 22 || j + currentX >= 10) {
+					//check collision 
 					rotationCollision = true;
 				}
 				if (((j - 1) + currentX) < 0 || activeTetrominos[(j + currentX) - 1][currentY + i] !== 'grey') {
