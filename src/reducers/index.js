@@ -42,19 +42,12 @@ function activeTetrominos(state = initialGrid, action) {
 function nextTetromino(state = {}, action) {
 	switch (action.type) {
 	case actions.START_GAME:
-		return {
-			shape: tetrominos[action.nextRandomShape].shape,
-			name: action.nextRandomShape,
-			color: tetrominos[action.nextRandomShape].color,
-			offsetX: blockUnit * 3,
-			offsetY: 0,
-		};
 	case actions.ADD_TETROMINO:
 		return {
 			shape: tetrominos[action.nextRandomShape].shape,
 			name: action.nextRandomShape,
 			color: tetrominos[action.nextRandomShape].color,
-			offsetX: blockUnit * 3,
+			offsetX: blockUnit * 2,
 			offsetY: 0,
 		};
 	default:
@@ -72,7 +65,7 @@ function currentTetromino(state = {}, action) {
 			offsetY: 0,
 		};
 	case actions.ADD_TETROMINO:
-		return Object.assign({}, action.nextTetromino);
+		return Object.assign({}, action.nextTetromino, { offsetX: blockUnit * 3 });
 	case actions.MOVE_RIGHT:
 		return Object.assign({}, state, { offsetX: state.offsetX + blockUnit });
 	case actions.MOVE_LEFT:
