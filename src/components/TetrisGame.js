@@ -9,13 +9,17 @@ const { fieldWidth, fieldHeight } = gameConstants;
 
 const TetrisGame = () => (
 	<div>
-		<MuiThemeProvider>
-			<Menu />
-		</MuiThemeProvider>
-		<GameField width={fieldWidth} height={fieldHeight} />
-		<MuiThemeProvider>
-			<CurrentGameInfo />
-		</MuiThemeProvider>
+		<div style={{backgroundColor:'grey'}} >
+			<MuiThemeProvider>
+				<Menu />
+			</MuiThemeProvider>
+		</div>
+		<div>
+			<GameField width={fieldWidth} height={fieldHeight} />
+			<MuiThemeProvider>
+				<CurrentGameInfo />
+			</MuiThemeProvider>
+		</div>
 	</div>
 );
 

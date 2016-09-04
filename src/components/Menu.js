@@ -6,22 +6,32 @@ import { loadGame } from '../actions/index.js';
 
 injectTapEventPlugin();
 let Menu = ({ menuStatus, dispatch }) => {
-	let style = {
+	console.log(dispatch);
+	const buttonStyle = {
 		width: '25%',
-		margin: '0 auto',
-		display: menuStatus ? 'block' : 'none',
+		margin: '10% auto',
+		display: menuStatus ? 'inline-block' : 'none',
+		verticalAlign: 'top',
 	};
-	return (
-		<div>
-			<RaisedButton
-				label="New Game"
-				primary style={style}
-				onClick={() => {
-					dispatch(loadGame());
-				}}
-			/>
-		</div>
-	);
+	const imgStyle = {
+		height: '60%',
+		width: '30%',
+	};
+	if (menuStatus) {
+		return (
+			<div>
+				<img src="../sebaTetris.png" style={imgStyle} />
+				<RaisedButton
+					label="New Game"
+					primary style={buttonStyle}
+					onClick={() => {
+						dispatch(loadGame());
+					}}
+				/>
+			</div>
+		);
+	}
+	return null;
 };
 const mapStateToProps = (state) => (
 	{ menuStatus: state.menuStatus }

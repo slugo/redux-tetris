@@ -13,16 +13,24 @@ let GameInfo = ({points, clearedLines, nextTetromino, isPlaying}) => {
 		return (
 			<div className={style.gameInfo}>
 				<RaisedButton
-					label="Pause Game"
+					label="Pause"
 					style={buttonStyle}
 					primary
 				/>
-
-				<Stage width={250} height={100}>
-					<Layer>
-						<NextTetromino />
-					</Layer>
-				</Stage>
+				<div className={style.scorePanel}>
+					<h2>Next Shape</h2>
+					<Stage width={250} height={100}>
+						<Layer>
+							<NextTetromino />
+						</Layer>
+					</Stage>
+				</div>
+				<div className={style.scorePanel}>
+					<h2>Score</h2>
+					<span className={style.scoreInfo}>{points}</span>
+					<h2>Lines</h2>
+					<span className={style.scoreInfo}>{clearedLines}</span>
+				</div>
 			</div>
 		);
 	}

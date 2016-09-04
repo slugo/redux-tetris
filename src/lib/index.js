@@ -1,5 +1,9 @@
 import gameConstants from '../gameConstants.js';
 
+function occupied(grid, x, y) {
+	return grid[x][y] !== 'grey';
+}
+
 export function getActualCoordinates(newTetromino) {
 	const coordinates = [];
 	const { shape, offsetX, offsetY } = newTetromino;
@@ -86,25 +90,25 @@ export function checkCollisions(direction, activeTetrominos, currentTetromino) {
 	const currentY = currentTetromino.offsetY / blockUnit;
 	let leftCollision = false;
 	let rightCollision = false;
-	let downCollision = false;
 	let rotationCollision = false;
+	let downCollision = false;
 	let gameOver = false;
 
 	for (let i = 0; i < currentTetromino.shape.length; i++) {
 		for (let j = 0; j < currentTetromino.shape[i].length; j++) {
 			const coord = currentTetromino.shape[i][j];
 			if (coord) {
-				if (j + currentX < 0 || i + currentY >= 22 || j + currentX >= 10) {
-					//check collision 
+				if (j + currentX < 0 || i + currentY >= 22 || j + currentX >= 10 ) {
+					//check collision
 					rotationCollision = true;
 				}
-				if (((j - 1) + currentX) < 0 || activeTetrominos[(j + currentX) - 1][currentY + i] !== 'grey') {
+				if (((j - 1) + currentX) < 0 || occupied(activeTetrominos, (j + currentX) - 1, currentY + i) ) {
 					leftCollision = true;
 				}
-				if (((j + 1) + currentX) >= 10 || activeTetrominos[j + currentX + 1][currentY + i] !== 'grey') {
+				if (((j + 1) + currentX) >= 10 || occupied(activeTetrominos, j + currentX + 1, currentY + i) ) {
 					rightCollision = true;
 				}
-				if (((i + 1) + currentY) >= 22 || activeTetrominos[j + currentX][currentY + i + 1] !== 'grey') {
+				if (((i + 1) + currentY) >= 22 || occupied(activeTetrominos, j + currentX, (currentY + i) + 1) ) {
 					downCollision = true;
 				}
 				if (downCollision && currentY === 0) {
