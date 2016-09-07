@@ -1,3 +1,4 @@
+
 import { combineReducers } from 'redux';
 import { getNewClearedGrid } from '../lib/index.js';
 import gameConstants from '../gameConstants.js';
@@ -5,13 +6,11 @@ import * as actions from '../actions/index.js';
 
 const { initialGrid, tetrominos, blockUnit } = gameConstants;
 
-function menuStatus(state = true, action) {
+function isPaused(state = false, action) {
 	switch (action.type) {
-	case actions.SHOW_MENU:
+	case actions.PAUSE_GAME:
 		return true;
-	case actions.HIDE_MENU:
-		return false;
-	case actions.START_GAME:
+	case actions.UNPAUSE_GAME:
 		return false;
 	default:
 		return state;
@@ -96,11 +95,14 @@ const tetrisApp = combineReducers({
 	currentTetromino,
 	nextTetromino,
 	gameScore,
-	menuStatus,
 	isPlaying,
+	isPaused,
 });
 
 export default tetrisApp;
+
+
+
 
 
 

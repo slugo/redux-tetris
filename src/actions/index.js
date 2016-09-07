@@ -1,3 +1,4 @@
+
 import gameConstants from '../gameConstants.js';
 import { rotateArray, checkCollisions, getCompletedLines } from '../lib/index.js';
 
@@ -13,6 +14,8 @@ export const MOVE_RIGHT = 'MOVE_RIGHT';
 export const MOVE_LEFT = 'MOVE_LEFT';
 export const MOVE_DOWN = 'MOVE_DOWN';
 export const ADD_TETROMINO = 'ADD_TETROMINO';
+export const PAUSE_GAME = 'PAUSE_GAME';
+export const UNPAUSE_GAME = 'UNPAUSE_GAME';
 
 export const addTetromino = (currentTetromino, nextTetromino) => {
 	const { shapesMapping } = gameConstants;
@@ -40,9 +43,22 @@ export const startGame = () => {
 		nextRandomShape,
 	};
 };
-export const stopGame = () => ({
-	type: STOP_GAME,
+export const pauseGame = () => ({
+	type: PAUSE_GAME,
 });
+export const unpauseGame = () => ({
+	type: UNPAUSE_GAME,
+});
+export const changePauseState = () => (
+	function (dispatch, getState) {
+		const { isPaused } = getState();
+		if (isPaused) {
+			dispatch(unpauseGame());
+		} else {
+			dispatch(pauseGame());
+		}
+	}
+);
 export const gameOver = () => ({
 	type: GAME_OVER,
 });
@@ -106,7 +122,7 @@ export const moveTetromino = (direction) => (
 	}
 );
 export const loadGame = () => (
-	function (dispatch) {
+	function (dispatch, getState) {
 		dispatch(startGame());
 		function handleMoving(e) {
 			switch (e.keyCode) {
@@ -137,20 +153,18 @@ export const loadGame = () => (
 			}
 		}
 		//test request animation frame
-		dropTetromino(dispatch, Date.now());
+		dropTetromino(dispatch, Date.now(), getState);
 		window.addEventListener('keydown', handleMoving);
 		window.addEventListener('keydown', handleRotation);
 	}
 );
 
-function dropTetromino(dispatch, startTime) {
+function dropTetromino(dispatch, startTime, getState) {
 	const currentTime = Date.now();
-	if (currentTime - startTime >= 500) {
+	const { isPaused } = getState();
+	if (currentTime - startTime >= 500 && !isPaused) {
 		startTime = currentTime;
 		dispatch(moveTetromino('down'));
 	}
-	requestAnimationFrame((dropTetromino.bind(this, dispatch, startTime)));
+	requestAnimationFrame((dropTetromino.bind(this, dispatch, startTime, getState)));
 }
-
-
-

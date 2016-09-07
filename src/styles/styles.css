@@ -1,8 +1,24 @@
+
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 body {
 	text-align: center;
 	font-family: 'Roboto', sans-serif;
+}
+
+.pausedBanner {
+		background: rgba(0,0,0,.5);
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 0px;
+}
+
+.menuButton {
+	width: 25%;
+	margin: 10% auto;
+	display: inline-block;
+	vertical-align: top;
 }
 
 .gameInfo {
@@ -32,9 +48,13 @@ body {
 	height: 660;
 	display: inline-block;
 	background-color: #CFD8DC;
+	position: relative;
 }
 
 .nextTetromino {
 	border-style: solid;
 	margin-left: 10%;
 }
+
+
+

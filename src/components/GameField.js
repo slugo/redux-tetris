@@ -9,7 +9,6 @@ import style from '../styles/styles.css';
 const { fieldHeight, fieldWidth } = gameConstants;
 
 let GameField = ({ isPlaying }) => {
-
 	if (isPlaying) {
 		return (
 			<div className={style.gameField}>
@@ -30,6 +29,10 @@ const mapStateToProps = (state) => ({
 });
 
 GameField = connect(mapStateToProps)(GameField);
+
+GameField.propTypes = {
+	isPlaying: React.PropTypes.bool,
+}
 
 export default GameField;
 
