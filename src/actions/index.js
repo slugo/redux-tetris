@@ -161,8 +161,8 @@ export const loadGame = () => (
 
 function dropTetromino(dispatch, startTime, getState) {
 	const currentTime = Date.now();
-	const { isPaused } = getState();
-	if (currentTime - startTime >= 500 && !isPaused) {
+	const { isPaused, isGameOver } = getState();
+	if (currentTime - startTime >= 500 && !isPaused && !isGameOver) {
 		startTime = currentTime;
 		dispatch(moveTetromino('down'));
 	}

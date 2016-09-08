@@ -17,6 +17,15 @@ function isPaused(state = false, action) {
 	}
 }
 
+function isGameOver(state = false, action) {
+	switch (action.type) {
+	case actions.GAME_OVER:
+		return true;
+	default:
+		return state;
+	}
+}
+
 function isPlaying(state = false, action) {
 	switch (action.type) {
 	case actions.START_GAME:
@@ -97,6 +106,7 @@ const tetrisApp = combineReducers({
 	gameScore,
 	isPlaying,
 	isPaused,
+	isGameOver,
 });
 
 export default tetrisApp;
