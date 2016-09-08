@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layer, Stage } from 'react-konva';
 import { connect } from 'react-redux';
+import PausedBanner from './PausedBanner.js';
 import CurrentTetromino from '../containers/CurrentTetromino.js';
 import ActiveTetrominos from '../containers/ActiveTetrominos.js';
 import gameConstants from '../gameConstants.js';
@@ -8,7 +9,7 @@ import style from '../styles/styles.css';
 
 const { fieldHeight, fieldWidth } = gameConstants;
 
-let GameField = ({ isPlaying }) => {
+let GameField = ({ isPlaying, isPaused }) => {
 	if (isPlaying) {
 		return (
 			<div className={style.gameField}>
@@ -18,6 +19,7 @@ let GameField = ({ isPlaying }) => {
 						<ActiveTetrominos />
 					</Layer>
 				</Stage>
+				{ isPaused ? <PausedBanner /> : null}
 			</div>
 		);
 	}
@@ -26,18 +28,9 @@ let GameField = ({ isPlaying }) => {
 
 const mapStateToProps = (state) => ({
 	isPlaying: state.isPlaying,
+	isPaused: state.isPaused,
 });
 
 GameField = connect(mapStateToProps)(GameField);
 
-GameField.propTypes = {
-	isPlaying: React.PropTypes.bool,
-}
-
 export default GameField;
-
-
-
-
-
-
