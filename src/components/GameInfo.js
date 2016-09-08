@@ -6,7 +6,7 @@ import style from '../styles/styles.css';
 import NextTetromino from '../containers/NextTetromino.js';
 import { changePauseState } from '../actions/index.js';
 
-let GameInfo = ({points, clearedLines, nextTetromino, isPlaying, isPaused, dispatch}) => {
+let GameInfo = ({points, clearedLines, nextTetromino, isPlaying, isPaused, isGameOver, dispatch}) => {
 	const buttonStyle = {
 		margin: '20% 0',
 	};
@@ -18,6 +18,7 @@ let GameInfo = ({points, clearedLines, nextTetromino, isPlaying, isPaused, dispa
 					style={buttonStyle}
 					primary
 					onClick={() => dispatch(changePauseState())}
+					disabled={isGameOver}
 				/>
 				<div className={style.scorePanel}>
 					<h2>Next Shape</h2>
@@ -43,6 +44,7 @@ let GameInfo = ({points, clearedLines, nextTetromino, isPlaying, isPaused, dispa
 const mapStateToProps = (state) => ({
 	isPlaying: state.isPlaying,
 	isPaused: state.isPaused,
+	isGameOver: state.isGameOver,
 });
 
 GameInfo = connect(mapStateToProps)(GameInfo);
