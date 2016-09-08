@@ -4,6 +4,7 @@ import GameField from './GameField.js';
 import gameConstants from '../gameConstants.js';
 import Menu from './Menu.js';
 import CurrentGameInfo from '../containers/CurrentGameInfo.js';
+import Banner from './Banner.js';
 
 const { fieldWidth, fieldHeight } = gameConstants;
 
