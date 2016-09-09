@@ -1,4 +1,3 @@
-
 import { combineReducers } from 'redux';
 import { getNewClearedGrid } from '../lib/index.js';
 import gameConstants from '../gameConstants.js';
@@ -110,18 +109,3 @@ const tetrisApp = combineReducers({
 });
 
 export default tetrisApp;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

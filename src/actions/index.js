@@ -1,4 +1,3 @@
-
 import gameConstants from '../gameConstants.js';
 import { rotateArray, checkCollisions, getCompletedLines } from '../lib/index.js';
 
@@ -92,8 +91,12 @@ export const rotateTetromino = () => (
 );
 export const moveTetromino = (direction) => (
 	function (dispatch, getState) {
-		const { activeTetrominos, currentTetromino, nextTetromino } = getState();
+		const { activeTetrominos, currentTetromino, nextTetromino, isPaused, isGameOver } = getState();
 		const collisionCheck = checkCollisions(direction, activeTetrominos, currentTetromino);
+
+		if(isPaused || isGameOver)
+			return;
+
 		switch (direction) {
 		case 'left':
 			if (collisionCheck === false) {
