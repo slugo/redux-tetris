@@ -88,48 +88,36 @@ export function checkCollisions(direction, activeTetrominos, currentTetromino) {
 	const { blockUnit } = gameConstants;
 	const currentX = currentTetromino.offsetX / blockUnit;
 	const currentY = currentTetromino.offsetY / blockUnit;
-	let leftCollision = false;
-	let rightCollision = false;
-	let rotationCollision = false;
-	let downCollision = false;
+	let collision = false;
 	let gameOver = false;
+	let nx = 0, ny = 0;
 
+	switch(direction){
+		case "left":
+			nx = -1;
+			break;
+		case "right":
+			nx = 1;
+			break;
+		case "down":
+			ny = 1;
+			break;
+	}
+	
 	for (let i = 0; i < currentTetromino.shape.length; i++) {
 		for (let j = 0; j < currentTetromino.shape[i].length; j++) {
 			const coord = currentTetromino.shape[i][j];
 			if (coord) {
-				if (j + currentX < 0 || i + currentY >= 22 || j + currentX >= 10 ) {
-					//check collision
-					rotationCollision = true;
+				const totalX = nx + currentX + j;
+				const totalY = ny + currentY + i;
+				if (totalX < 0 || totalY >= 22 || totalX >= 10 || occupied(activeTetrominos, totalX, totalY)) {
+					collision = true;
 				}
-				if (((j - 1) + currentX) < 0 || occupied(activeTetrominos, (j + currentX) - 1, currentY + i) ) {
-					leftCollision = true;
-				}
-				if (((j + 1) + currentX) >= 10 || occupied(activeTetrominos, j + currentX + 1, currentY + i) ) {
-					rightCollision = true;
-				}
-				if (((i + 1) + currentY) >= 22 || occupied(activeTetrominos, j + currentX, (currentY + i) + 1) ) {
-					downCollision = true;
-				}
-				if (downCollision && currentY === 0) {
+				if (collision && currentY === 0 && direction === 'down') {
 					gameOver = true;
 				}
 			}
 		}
 	}
-	switch (direction) {
-	case 'left':
-		return leftCollision;
-	case 'right':
-		return rightCollision;
-	case 'rotation':
-		return rotationCollision;
-	case 'down':
-		if (gameOver) {
-			return 'GAME_OVER';
-		}
-		return downCollision;
-	default:
-		return true;
-	}
+	return gameOver ? 'GAME_OVER' : collision;
 }
