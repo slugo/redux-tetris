@@ -20,6 +20,8 @@ function isGameOver(state = false, action) {
 	switch (action.type) {
 	case actions.GAME_OVER:
 		return true;
+	case actions.START_GAME:
+		return false;
 	default:
 		return state;
 	}
