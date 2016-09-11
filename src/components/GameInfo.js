@@ -34,7 +34,6 @@ let GameInfo = ({points, clearedLines, nextTetromino, isPlaying, isPaused, isGam
 					<h2>Lines</h2>
 					<span className={style.scoreInfo}>{clearedLines}</span>
 				</div>
-				
 			</div>
 		);
 	}

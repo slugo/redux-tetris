@@ -92,7 +92,7 @@ export function checkCollisions(direction, activeTetrominos, currentTetromino) {
 	let gameOver = false;
 	let nx = 0, ny = 0;
 
-	switch(direction){
+	switch(direction) {
 		case "left":
 			nx = -1;
 			break;
@@ -103,7 +103,7 @@ export function checkCollisions(direction, activeTetrominos, currentTetromino) {
 			ny = 1;
 			break;
 	}
-	
+
 	for (let i = 0; i < currentTetromino.shape.length; i++) {
 		for (let j = 0; j < currentTetromino.shape[i].length; j++) {
 			const coord = currentTetromino.shape[i][j];

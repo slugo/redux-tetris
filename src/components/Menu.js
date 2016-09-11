@@ -11,7 +11,7 @@ class Menu extends React.Component {
 			return (
 				<div>
 					<h1 className={style.pageBanner}>REDUX TETRIS</h1>
-					<h2>Press spacebar to start the game</h2>
+					<h2 style={{color:'grey'}}>Press spacebar to start the game</h2>
 				</div>
 			);
 		}
