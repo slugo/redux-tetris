@@ -5,6 +5,12 @@ body {
 	font-family: 'Roboto', sans-serif;
 }
 
+.pageBanner {
+	margin-top: 50px;
+	font-size: 60px;
+	letter-spacing: 40px;
+}
+
 .menuButton {
 	width: 25%;
 	margin: 10% auto;
