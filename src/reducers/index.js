@@ -5,34 +5,15 @@ import * as actions from '../actions/index.js';
 
 const { initialGrid, tetrominos, blockUnit } = gameConstants;
 
-function isPaused(state = false, action) {
+function gameStatus(state = 'IDLE', action) {
 	switch (action.type) {
-	case actions.PAUSE_GAME:
-		return true;
+	case actions.START_GAME:
 	case actions.UNPAUSE_GAME:
-		return false;
-	default:
-		return state;
-	}
-}
-
-function isGameOver(state = false, action) {
-	switch (action.type) {
+		return 'PLAYING';
+	case actions.PAUSE_GAME:
+		return 'PAUSED';
 	case actions.GAME_OVER:
-		return true;
-	case actions.START_GAME:
-		return false;
-	default:
-		return state;
-	}
-}
-
-function isPlaying(state = false, action) {
-	switch (action.type) {
-	case actions.START_GAME:
-		return true;
-	case actions.STOP_GAME:
-		return false;
+		return 'GAME_OVER';
 	default:
 		return state;
 	}
@@ -105,9 +86,7 @@ const tetrisApp = combineReducers({
 	currentTetromino,
 	nextTetromino,
 	gameScore,
-	isPlaying,
-	isPaused,
-	isGameOver,
+	gameStatus,
 });
 
 export default tetrisApp;

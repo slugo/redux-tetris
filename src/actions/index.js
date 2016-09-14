@@ -50,8 +50,8 @@ export const unpauseGame = () => ({
 });
 export const changePauseState = () => (
 	function (dispatch, getState) {
-		const { isPaused } = getState();
-		if (isPaused) {
+		const { gameStatus } = getState();
+		if (gameStatus === 'PAUSED') {
 			dispatch(unpauseGame());
 		} else {
 			dispatch(pauseGame());
@@ -91,11 +91,12 @@ export const rotateTetromino = () => (
 );
 export const moveTetromino = (direction) => (
 	function (dispatch, getState) {
-		const { activeTetrominos, currentTetromino, nextTetromino, isPaused, isGameOver } = getState();
+		const { activeTetrominos, currentTetromino, nextTetromino, gameStatus } = getState();
 		const collisionCheck = checkCollisions(direction, activeTetrominos, currentTetromino);
 
-		if(isPaused || isGameOver)
+		if (gameStatus === 'PAUSED' || gameStatus === 'GAME_OVER') {
 			return;
+		}
 
 		switch (direction) {
 		case 'left':
@@ -175,8 +176,8 @@ export const loadGame = () => (
 
 function dropTetromino(dispatch, startTime, getState) {
 	const currentTime = Date.now();
-	const { isPaused, isGameOver } = getState();
-	if (currentTime - startTime >= 500 && !isPaused && !isGameOver) {
+	const { gameStatus } = getState();
+	if (currentTime - startTime >= 500 && gameStatus !== 'PAUSED' && gameStatus !== 'GAME_OVER') {
 		startTime = currentTime;
 		dispatch(moveTetromino('down'));
 	}

@@ -40,10 +40,10 @@ let GameInfo = ({points, clearedLines, nextTetromino, isPlaying, isPaused, isGam
 	return null;
 };
 
-const mapStateToProps = (state) => ({
-	isPlaying: state.isPlaying,
-	isPaused: state.isPaused,
-	isGameOver: state.isGameOver,
+const mapStateToProps = ({ gameStatus }) => ({
+	isPlaying: gameStatus !== 'IDLE',
+	isPaused: gameStatus === 'PAUSED',
+	isGameOver: gameStatus === 'GAME_OVER',
 });
 
 GameInfo = connect(mapStateToProps)(GameInfo);

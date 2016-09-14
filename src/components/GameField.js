@@ -29,10 +29,10 @@ let GameField = ({ isPlaying, isPaused, isGameOver }) => {
 	return null;
 };
 
-const mapStateToProps = (state) => ({
-	isPlaying: state.isPlaying,
-	isPaused: state.isPaused,
-	isGameOver: state.isGameOver,
+const mapStateToProps = ({ gameStatus }) => ({
+	isPlaying: gameStatus !== 'IDLE',
+	isPaused: gameStatus === 'PAUSED',
+	isGameOver: gameStatus === 'GAME_OVER',
 });
 
 GameField = connect(mapStateToProps)(GameField);

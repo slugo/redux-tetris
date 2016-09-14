@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import Menu from '../components/Menu.js';
 
 const mapStateToProps = (state) => ({
-	isPlaying: state.isPlaying,
+	isPlaying: state.gameStatus !== 'IDLE',
 });
 
 const MenuContainer = connect(
