@@ -81,10 +81,10 @@ export const rotateRight = (rotatedTetromino) => ({
 });
 export const rotateTetromino = () => (
 	function (dispatch, getState) {
-		const { activeTetrominos, currentTetromino } = getState();
+		const { activeTetrominos, currentTetromino, gameStatus } = getState();
 		const rotatedTetromino = Object.assign({}, currentTetromino);
 		rotatedTetromino.shape = rotateArray(rotatedTetromino);
-		if (!checkCollisions('rotation', activeTetrominos, rotatedTetromino)) {
+		if (!checkCollisions('rotation', activeTetrominos, rotatedTetromino) && gameStatus === 'PLAYING') {
 			dispatch(rotateRight(rotatedTetromino.shape));
 		}
 	}
