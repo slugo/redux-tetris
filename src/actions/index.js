@@ -129,6 +129,7 @@ export const loadMenu = () => (
 		function handleSpaceBar(e) {
 			if (e.keyCode === 32) {
 				dispatch(loadGame());
+				window.removeEventListener('keyup', handleSpaceBar);
 			}
 		}
 		window.addEventListener('keyup', handleSpaceBar);
