@@ -1,11 +1,7 @@
-
 const path = require('path');
-const Dashboard = require('webpack-dashboard');
-const DashboardPlugin = require('webpack-dashboard/plugin');
 
 const APP_DIR = './src/';
 const BUILD_DIR = './dist/';
-const dashboard = new Dashboard();
 
 module.exports = {
 	entry: path.resolve(APP_DIR, 'app.js'),
@@ -31,5 +27,4 @@ module.exports = {
 		],
 	},
 	devtool: 'eval',
-	plugins: [new DashboardPlugin(dashboard.setData)],
 };
