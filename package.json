@@ -12,6 +12,7 @@
   "dependencies": {
     "konva": "^1.0.3",
     "material-ui": "^0.15.3",
+    "normalize.css": "^5.0.0",
     "react": "^15.2.0",
     "react-dom": "^15.2.0",
     "react-konva": "^1.0.5",
