@@ -15,7 +15,7 @@ const TetrisGame = () => (
 		<div>
 			<MenuContainer />
 		</div>
-		<div>
+		<div style={{position: 'relative'}}>
 			<GameField width={fieldWidth} height={fieldHeight} />
 			<MuiThemeProvider>
 				<CurrentGameInfo />
