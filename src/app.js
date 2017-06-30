@@ -1,15 +1,20 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReduxThunk from 'redux-thunk';
-import Normalize from 'normalize.css';
 import TetrisGame from './components/TetrisGame';
 import TetrisApp from './reducers/index.js';
 
+import 'normalize.css';
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const store = createStore(
 	TetrisApp,
-	applyMiddleware(ReduxThunk)
+	composeEnhancers(
+		applyMiddleware(ReduxThunk)
+	)
 );
 
 const App = () => (
@@ -21,7 +26,4 @@ const App = () => (
 );
 
 ReactDOM.render(<App />, document.getElementById('react-app'));
-
-
-
 

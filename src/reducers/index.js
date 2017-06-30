@@ -34,12 +34,12 @@ function nextTetromino(state = {}, action) {
 	case actions.START_GAME:
 	case actions.ADD_TETROMINO:
 		return {
-			shape: tetrominos[action.nextRandomShape].shape,
-			name: action.nextRandomShape,
-			color: tetrominos[action.nextRandomShape].color,
-			offsetX: 10,
-			offsetY: blockUnit,
-		};
+				shape: tetrominos[action.nextRandomShape].shape,
+				name: action.nextRandomShape,
+				color: tetrominos[action.nextRandomShape].color,
+				offsetX: 10,
+				offsetY: blockUnit,
+			};
 	default:
 		return state;
 	}
@@ -48,12 +48,12 @@ function currentTetromino(state = {}, action) {
 	switch (action.type) {
 	case actions.START_GAME:
 		return {
-			shape: tetrominos[action.currentRandomShape].shape,
-			name: action.currentRandomShape,
-			color: tetrominos[action.currentRandomShape].color,
-			offsetX: blockUnit * 3,
-			offsetY: 0,
-		};
+				shape: tetrominos[action.currentRandomShape].shape,
+				name: action.currentRandomShape,
+				color: tetrominos[action.currentRandomShape].color,
+				offsetX: blockUnit * 3,
+				offsetY: 0,
+			};
 	case actions.ADD_TETROMINO:
 		return Object.assign({}, action.nextTetromino, { offsetX: blockUnit * 3, offsetY: 0 });
 	case actions.MOVE_RIGHT:
@@ -72,15 +72,30 @@ function gameScore(state = {}, action) {
 	switch (action.type) {
 	case actions.START_GAME:
 		return {
-			points: 0,
-			clearedLines: 0,
-		};
+				points: 0,
+				clearedLines: 0,
+				difficulty: 500,
+				difficultyPoints: 0,
+			};
 	case actions.ADD_SCORE:
-		return Object.assign({}, state, { points: action.points + state.points, clearedLines: action.clearedLines + state.clearedLines });
+		{
+				const delta = 100;
+				const difficultyPoints = action.points + state.difficultyPoints;
+				const difficulty = state.difficulty - 50 * Math.floor(difficultyPoints / delta);
+
+				return Object.assign({}, state, {
+					points: action.points + state.points,
+					clearedLines: action.clearedLines + state.clearedLines,
+					difficulty,
+					difficultyPoints: difficultyPoints >= delta ? 0 : difficultyPoints,
+				});
+			}
 	default:
 		return state;
 	}
 }
+
+
 const tetrisApp = combineReducers({
 	activeTetrominos,
 	currentTetromino,
@@ -88,5 +103,6 @@ const tetrisApp = combineReducers({
 	gameScore,
 	gameStatus,
 });
+
 
 export default tetrisApp;

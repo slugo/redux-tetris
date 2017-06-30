@@ -15,6 +15,7 @@ export const MOVE_DOWN = 'MOVE_DOWN';
 export const ADD_TETROMINO = 'ADD_TETROMINO';
 export const PAUSE_GAME = 'PAUSE_GAME';
 export const UNPAUSE_GAME = 'UNPAUSE_GAME';
+export const DIFFICULTY = 'GAME_DIFFICULTY';
 
 export const addTetromino = (currentTetromino, nextTetromino) => {
 	const { shapesMapping } = gameConstants;
@@ -89,6 +90,13 @@ export const rotateTetromino = () => (
 		}
 	}
 );
+
+function updateDifficulty() {
+	return {
+		type: DIFFICULTY,
+	};
+}
+
 export const moveTetromino = (direction) => (
 	function (dispatch, getState) {
 		const { activeTetrominos, currentTetromino, nextTetromino, gameStatus } = getState();
@@ -101,24 +109,24 @@ export const moveTetromino = (direction) => (
 		switch (direction) {
 		case 'left':
 			if (collisionCheck === false) {
-				dispatch(moveLeft());
-			}
+					dispatch(moveLeft());
+				}
 			return;
 		case 'right':
 			if (collisionCheck === false) {
-				dispatch(moveRight());
-			}
+					dispatch(moveRight());
+				}
 			return;
 		case 'down':
 			if (collisionCheck === false) {
-				dispatch(moveDown());
-			} else if (collisionCheck === GAME_OVER) {
-				dispatch(gameOver());
-			} else {
-				const clearedLines = getCompletedLines(activeTetrominos, currentTetromino).length;
-				dispatch(addScore(clearedLines));
-				dispatch(addTetromino(currentTetromino, nextTetromino));
-			}
+					dispatch(moveDown());
+				} else if (collisionCheck === GAME_OVER) {
+					dispatch(gameOver());
+				} else {
+					const clearedLines = getCompletedLines(activeTetrominos, currentTetromino).length;
+					dispatch(addScore(clearedLines));
+					dispatch(addTetromino(currentTetromino, nextTetromino));
+				}
 			return;
 		default:
 			return;
@@ -126,7 +134,7 @@ export const moveTetromino = (direction) => (
 	}
 );
 export const loadMenu = () => (
-	function(dispatch) {
+	function (dispatch) {
 		function handleSpaceBar(e) {
 			if (e.keyCode === 32) {
 				dispatch(loadGame());
@@ -167,7 +175,7 @@ export const loadGame = () => (
 				break;
 			}
 		}
-		//test request animation frame
+		// test request animation frame
 		dropTetromino(dispatch, Date.now(), getState);
 		window.addEventListener('keydown', handleMoving);
 		window.addEventListener('keydown', handleRotation);
@@ -176,8 +184,9 @@ export const loadGame = () => (
 
 function dropTetromino(dispatch, startTime, getState) {
 	const currentTime = Date.now();
-	const { gameStatus } = getState();
-	if (currentTime - startTime >= 500 && gameStatus !== 'PAUSED' && gameStatus !== 'GAME_OVER') {
+	const { gameStatus, gameScore } = getState();
+
+	if (currentTime - startTime >= gameScore.difficulty && gameStatus !== 'PAUSED' && gameStatus !== 'GAME_OVER') {
 		startTime = currentTime;
 		dispatch(moveTetromino('down'));
 	}
