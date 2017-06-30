@@ -5,16 +5,18 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "start:prod": "webpack"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "has-flag": "^2.0.0",
     "konva": "^1.0.3",
     "material-ui": "^0.15.3",
     "normalize.css": "^5.0.0",
-    "react": "^15.2.0",
-    "react-dom": "^15.2.0",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
     "react-konva": "^1.0.5",
     "react-redux": "^4.4.5",
     "react-tap-event-plugin": "^1.0.0",
